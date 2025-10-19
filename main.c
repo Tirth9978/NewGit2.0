@@ -19,6 +19,12 @@ int main(int argc , char * argv[]){
           if (argc <= 1){
                invalidCommand(); 
           }
+          if (findMainConfigFile()){
+               printf("Ok\n");
+          }
+          else {
+               printf("No\n");
+          }
      }
      else {
           int status ; 
