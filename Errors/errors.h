@@ -4,4 +4,7 @@
 void forkCreationProblem();
 void invalidCommand();
 
+// user...
+void userConfig() ;
+
 #endif

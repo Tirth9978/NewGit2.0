@@ -20,3 +20,12 @@ void forkCreationProblem() {
      printf(RED "Internal Problem Please tyr again Leter :(" END);
      return ;
 }
+
+void userConfig(char * str) {
+     printf(RED "%s , Invalid\n" , str  , END);
+     printf("  ^\n");
+     printf("  |\n");
+     printf(GRN "user.email\n" END);
+     printf(GRN "user.name\n" END);
+     return ;
+}

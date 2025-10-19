@@ -19,17 +19,20 @@ int main(int argc , char * argv[]){
           if (argc <= 1){
                invalidCommand(); 
           }
-          if (findMainConfigFile()){
-               printf("Ok\n");
+          if (argv[1] == "config"){
+               SecondAgrumentChecking(argv)
           }
-          else {
-               printf("No\n");
-          }
+
+          // if (findMainConfigFile()){
+          //      printf("Ok\n");
+          // }
+          // else {
+          //      printf("No\n");
+          // }
      }
      else {
           int status ; 
           waitpid(pid , &status , 0);
-          printf("Parent: Child process finished handling invalid command.\n");
      }
      
 

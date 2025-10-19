@@ -2,5 +2,6 @@
 #define MAKECONFIG_H
 
 int findMainConfigFile();
+void SecondAgrumentChecking();
 
 #endif

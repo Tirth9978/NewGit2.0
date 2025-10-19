@@ -1,7 +1,10 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>     // for fork()
+#include <sys/wait.h>   // for wait()
 #include "MakeConfig.h"
+#include "Errors/errors.h"
 
 
 #define RED "\x1B[31m"
@@ -40,5 +43,35 @@ int findMainConfigFile (){
      else {
           free(filePath);
           return 0;
+     }
+}
+
+void SecondAgrumentChecking(char * argv[]) {
+     pid_t pid ;
+     if (argv[2] == "--global"){
+          pid = fork();
+          if (pid < 0){
+               forkCreationProblem();
+               exit(1);
+          }
+
+          if (pid == 0){
+               if (argv[3] == "user.name"){
+
+               }
+               if (argv[3] == "user.email"){
+
+               }
+               else {
+                    
+               }
+          }
+          else {
+               int status ;
+               waitpid(pid , &status , 0);
+          }
+     }
+     else {
+
      }
 }
