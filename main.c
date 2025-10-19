@@ -22,7 +22,7 @@ int main(int argc , char * argv[]){
      }
      else {
           int status ; 
-          waitpid(pid , &status , 0)
+          waitpid(pid , &status , 0);
           printf("Parent: Child process finished handling invalid command.\n");
      }
      
