@@ -57,13 +57,27 @@ void SecondAgrumentChecking(char * argv[]) {
 
           if (pid == 0){
                if (argv[3] == "user.name"){
-
+                    if (argv[4] == NULL){
+                         NotFoundUserName();
+                    }
+                    else {
+                         if (!findMainConfigFile()){
+                              makeFile();
+                         }
+                    }
                }
                if (argv[3] == "user.email"){
+                    if (argv[4] == NULL){
+                         NotFoundUserName();
+                    }
+                    else {
+                         if (!findMainConfigFile()){
 
+                         }
+                    }
                }
                else {
-                    
+                    userConfig(argv[3]);
                }
           }
           else {
@@ -74,4 +88,20 @@ void SecondAgrumentChecking(char * argv[]) {
      else {
 
      }
+}
+
+void makeFile() {
+     const char *home_dir = getenv("HOME");
+     if (home_dir == NULL) {
+        forkCreationProblem();
+        return 1;
+     }
+
+     char path[1024];
+     snprintf(path, sizeof(path), "%s/NewGit2.0", home_dir);
+     if (mkdir(path, 0755) == -1) {
+          perror("Error creating directory");
+          return 1;
+     }
+     return ;
 }

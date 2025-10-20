@@ -6,5 +6,6 @@ void invalidCommand();
 
 // user...
 void userConfig() ;
+void NotFoundUserName() ;
 
 #endif

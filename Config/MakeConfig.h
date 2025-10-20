@@ -3,5 +3,6 @@
 
 int findMainConfigFile();
 void SecondAgrumentChecking();
+void makeFile();
 
 #endif

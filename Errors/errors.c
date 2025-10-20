@@ -29,3 +29,9 @@ void userConfig(char * str) {
      printf(GRN "user.name\n" END);
      return ;
 }
+
+void NotFoundUserName() {
+     printf( RED "Please Enter the your Username :)\n" END );
+     printf( RED "Correct | git config --global user.name <Username>" END );
+     return ;
+}

@@ -22,13 +22,7 @@ int main(int argc , char * argv[]){
           if (argv[1] == "config"){
                SecondAgrumentChecking(argv)
           }
-
-          // if (findMainConfigFile()){
-          //      printf("Ok\n");
-          // }
-          // else {
-          //      printf("No\n");
-          // }
+          
      }
      else {
           int status ; 
