@@ -63,8 +63,9 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                     else {
                          if (!findMainConfigFile()){
                               makeFile();
-                              printf("Yes I am in username:)");
+                              addConfigUser(arg4 , "username") ; 
                          }
+                         
                     }
                }
                else if (arg3 == "user.email"){
@@ -104,5 +105,37 @@ void makeFile() {
           perror("Error creating directory");
           return ;
      }
+     return ;
+}
+
+void addConfigUser(char * str , char * type) {
+     char * home = getenv("HOME");
+     if (home == NULL){
+          forkCreationProblem() ; 
+          return ;
+     }
+     char filePath[512];
+     vsnprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
+
+     FILE * file = fopen(filePath , 'a');
+     if (file == NULL){
+          fileCreationConfigError();
+          return ;
+     }
+     char * message = "Username :";
+     strcat(message , str);
+
+     size_t bytes_written = fwrite(message , sizeof(char) , strlen(message) , file);
+
+     if (bytes_written != strlen(message)){
+          fileCreationConfigError();
+          return ;
+     }
+
+     fclose(file);
+
+     printf(GRN "%s ,Successfully config as %s\n" , type , str, END);
+     printf( YEL "Thank You for using NewGit2.0\n" END);
+     printf( CYN "NewGit2.0 --- 1.0.1\n" END );
      return ;
 }

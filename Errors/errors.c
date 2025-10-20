@@ -17,7 +17,7 @@ void invalidCommand() {
 }
 
 void forkCreationProblem() {
-     printf(RED "Internal Problem Please tyr again Leter :(" END);
+     printf(RED "Internal Problem Please try again Leter :(" END);
      return ;
 }
 
@@ -32,6 +32,16 @@ void userConfig(char * str) {
 
 void NotFoundUserName() {
      printf( RED "Please Enter the your Username :)\n" END );
-     printf( RED "Correct | git config --global user.name <Username>" END );
+     printf( RED "Correct | git config --global user.name <Username>\n" END );
+     return ;
+}
+
+// -------------------------------------------- File --------------------------------------------//
+void fileCreationConfigError()  {
+     printf(RED "Here , There is a error in the file creation , Please Try again leter :(" END);
+     return ;
+}
+void writingConfigError() {
+     printf(RED "Sorry , There is problem to config user :(\n" END);
      return ;
 }

@@ -8,4 +8,7 @@ void invalidCommand();
 void userConfig() ;
 void NotFoundUserName() ;
 
+// File 
+void fileCreationConfigError() ;
+void writingConfigError();
 #endif
