@@ -31,7 +31,7 @@ int main(int argc , char * argv[]){
 
      }
      else {
-           close(fd[0]); // Close read end (parent will write)
+          close(fd[0]); // Close read end (parent will write)
           int status; 
           waitpid(pid , &status , 0);
      }

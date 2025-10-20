@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
     pid = fork();
 
     if (pid < 0) {
-        forkCreationProblem();
         return 1;
     } 
     else if (pid == 0) {
@@ -38,9 +37,9 @@ int main(int argc, char *argv[]) {
 
         // Simulated logic:
         if (strcmp(buffer, "config") == 0) {
-            SecondAgrumentChecking(argv);
+            printf("YES :)\n");
         } else {
-            invalidCommand();
+            printf("NO :)\n");
         }
     } 
     else {
@@ -57,10 +56,7 @@ int main(int argc, char *argv[]) {
 
             // Write command to pipe
             write(fd[1], command, strlen(command));
-        } else {
-            invalidCommand();
-        }
-
+        } 
         close(fd[1]); // Done writing
 
         int status;
