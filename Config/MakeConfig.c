@@ -50,7 +50,7 @@ void SecondAgrumentChecking(char * argv[]) {
      pid_t pid ;
      printf("Yes I am in :)");
      for (int i = 0; i < 3; i++) {
-          printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
+          printf("  argv[%d] = %s\n", i + 1, argv[i]);
      }
      printf("%s" , argv[2])
      if (argv[2] == "--global"){
