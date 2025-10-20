@@ -61,11 +61,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          NotFoundUserName();
                     }
                     else {
-                         // if (!findMainConfigFile()){
-                         //      makeFile();
-                         // }
-                         // makeFile();
-                         addConfigUser(arg4 , "username") ;
+                         addConfigUser(arg4 , "Username") ;
                     }
                }
                else if (arg3 == "user.email"){
@@ -73,8 +69,11 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          NotFoundUserName();
                     }
                     else {
-                         if (!findMainConfigFile()){
-
+                         if (strstr(arg4 , "@") != NULL && strstr(arg4 , ".com") != NULL){
+                              addConfigUser(arg4 , "Email") ;
+                         }
+                         else {
+                              printf( RED "Invalid Email type\n" END );
                          }
                     }
                }
