@@ -67,7 +67,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          }
                     }
                }
-               if (arg3 == "user.email"){
+               else if (arg3 == "user.email"){
                     if (arg4 == NULL){
                          NotFoundUserName();
                     }
