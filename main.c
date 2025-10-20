@@ -20,9 +20,9 @@ int main(int argc , char * argv[]){
                invalidCommand(); 
           }
           if (argv[1] == "config"){
-               SecondAgrumentChecking(argv)
+               SecondAgrumentChecking(argv);
           }
-          
+
      }
      else {
           int status ; 

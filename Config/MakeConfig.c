@@ -4,7 +4,7 @@
 #include <unistd.h>     // for fork()
 #include <sys/wait.h>   // for wait()
 #include "MakeConfig.h"
-#include "Errors/errors.h"
+#include "../Errors/errors.h"
 
 
 #define RED "\x1B[31m"
