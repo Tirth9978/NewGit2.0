@@ -2,8 +2,7 @@
 #include <unistd.h>     // for fork(), pipe()
 #include <sys/wait.h>   // for waitpid()
 #include <string.h>     // for strlen()
-#include "Config/MakeConfig.h"
-#include "Errors/errors.h"
+
 
 int main(int argc , char * argv[]){
      int fd[2];
