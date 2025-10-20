@@ -49,7 +49,7 @@ int findMainConfigFile (){
 void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg4) {
      pid_t pid ;
      printf("Yes I am in :)");
-    
+     
      if (arg2 == "--global"){
           pid = fork();
           if (pid < 0){
