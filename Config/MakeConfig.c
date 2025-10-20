@@ -88,7 +88,7 @@ void SecondAgrumentChecking(char * argv[]) {
           }
      }
      else {
-
+          printf("Sorry :(");
      }
 }
 
