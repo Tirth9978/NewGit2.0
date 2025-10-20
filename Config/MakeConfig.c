@@ -63,9 +63,8 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                     else {
                          if (!findMainConfigFile()){
                               makeFile();
-                              addConfigUser(arg4 , "username") ; 
                          }
-                         
+                         addConfigUser(arg4 , "username") ;
                     }
                }
                else if (arg3 == "user.email"){
