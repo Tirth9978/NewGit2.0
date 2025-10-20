@@ -108,34 +108,41 @@ void makeFile() {
      return ;
 }
 
-void addConfigUser(char * str , char * type) {
-     char * home = getenv("HOME");
-     if (home == NULL){
-          forkCreationProblem() ; 
-          return ;
-     }
-     char filePath[512];
-     vsnprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
+void addConfigUser(char *str, char *type) {
+    char *home = getenv("HOME");
+    if (home == NULL) {
+        forkCreationProblem();
+        return;
+    }
+    
+    char filePath[512];
+    // FIX 1: Use snprintf instead of vsnprintf
+    snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
 
-     FILE * file = fopen(filePath , 'a');
-     if (file == NULL){
-          fileCreationConfigError();
-          return ;
-     }
-     char * message = "Username :";
-     strcat(message , str);
+    // FIX 2: Use double quotes for mode string, not single quotes
+    FILE *file = fopen(filePath, "a");
+    if (file == NULL) {
+        fileCreationConfigError();
+        return;
+    }
 
-     size_t bytes_written = fwrite(message , sizeof(char) , strlen(message) , file);
+    // FIX 3: Don't modify string literals - use a buffer instead
+    char message[256];
+    snprintf(message, sizeof(message), "Username :%s\n", str);
 
-     if (bytes_written != strlen(message)){
-          fileCreationConfigError();
-          return ;
-     }
+    size_t bytes_written = fwrite(message, sizeof(char), strlen(message), file);
 
-     fclose(file);
+    if (bytes_written != strlen(message)) {
+        fileCreationConfigError();
+        fclose(file); // Don't forget to close before returning
+        return;
+    }
 
-     printf(GRN "%s ,Successfully config as %s\n" , type , str, END);
-     printf( YEL "Thank You for using NewGit2.0\n" END);
-     printf( CYN "NewGit2.0 --- 1.0.1\n" END );
-     return ;
+    fclose(file);
+
+    // FIX 4: Correct the printf format string and syntax
+    printf(GRN "%s Successfully config as %s\n" END, type, str);
+    printf(YEL "Thank You for using NewGit2.0\n" END);
+    printf(CYN "NewGit2.0 --- 1.0.1\n" END);
+    return;
 }
