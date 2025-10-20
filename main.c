@@ -49,22 +49,23 @@ int main(int argc , char * argv[]){
 
           close(fd[0]);
           // ✅ Child received argv[] as separate elements
-          printf("Child received arguments:\n");
-          for (int i = 0; i < arg_count; i++) {
-               printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
-          }
+          // printf("Child received arguments:\n");
+          // for (int i = 0; i < arg_count; i++) {
+          //      printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
+          // }
 
           if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
                SecondAgrumentChecking(child_argv);
           } else {
                invalidCommand();
           }
-
-          // Free memory
-          for (int i = 0; i < arg_count; i++) {
-               free(child_argv[i]);
-          }
-          free(child_argv);
+          
+          // if (argc <= 1){
+          //      invalidCommand(); 
+          // }
+          // if (argv[1] == "config"){
+          //      SecondAgrumentChecking(argv);
+          // }
 
      }
      else {
