@@ -94,14 +94,14 @@ void makeFile() {
      const char *home_dir = getenv("HOME");
      if (home_dir == NULL) {
         forkCreationProblem();
-        return 1;
+        return ;
      }
 
      char path[1024];
      snprintf(path, sizeof(path), "%s/NewGit2.0", home_dir);
      if (mkdir(path, 0755) == -1) {
           perror("Error creating directory");
-          return 1;
+          return ;
      }
      return ;
 }
