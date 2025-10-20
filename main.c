@@ -22,16 +22,64 @@ int main(int argc , char * argv[]){
      }
      else if (pid == 0) {
           // Child 
-          if (argc <= 1){
-               invalidCommand(); 
+
+          // ---- CHILD PROCESS ----
+          close(fd[1]); // Close write end
+
+          // First read how many arguments were sent
+          int arg_count;
+          read(fd[0], &arg_count, sizeof(int));
+
+          // Allocate array to store arguments
+          char **child_argv = malloc((arg_count + 1) * sizeof(char *));
+          if (!child_argv) {
+               perror("malloc failed");
+               return 1;
           }
-          if (argv[1] == "config"){
-               SecondAgrumentChecking(argv);
+
+          // Read each argument string
+          for (int i = 0; i < arg_count; i++) {
+               int len;
+               read(fd[0], &len, sizeof(int)); // length of string
+               child_argv[i] = malloc(len + 1);
+               read(fd[0], child_argv[i], len);
+               child_argv[i][len] = '\0';
           }
+          child_argv[arg_count] = NULL; // end of argv[]
+
+          close(fd[0]);
+          // ✅ Child received argv[] as separate elements
+          printf("Child received arguments:\n");
+          for (int i = 0; i < arg_count; i++) {
+               printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
+          }
+
+          if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
+               SecondAgrumentChecking(child_argv);
+          } else {
+               invalidCommand();
+          }
+
+          // Free memory
+          for (int i = 0; i < arg_count; i++) {
+               free(child_argv[i]);
+          }
+          free(child_argv);
 
      }
      else {
-          close(fd[0]); // Close read end (parent will write)
+          close(fd[0]); // Close read end
+
+          // Send total number of arguments (excluding program name)
+          int arg_count = argc - 1;
+          write(fd[1], &arg_count, sizeof(int));
+
+          for (int i = 1; i < argc; i++) {
+               int len = strlen(argv[i]);
+               write(fd[1], &len, sizeof(int));
+               write(fd[1], argv[i], len);
+          }
+          close(fd[1]);
           int status; 
           waitpid(pid , &status , 0);
      }

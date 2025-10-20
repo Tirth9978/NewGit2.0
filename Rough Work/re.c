@@ -53,9 +53,9 @@ int main(int argc, char *argv[]) {
 
         // Example usage
         if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
-            printf("Ok");
+            SecondAgrumentChecking(child_argv);
         } else {
-            printf("NO");
+            invalidCommand();
         }
 
         // Free memory
