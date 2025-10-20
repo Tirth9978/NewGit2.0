@@ -54,10 +54,10 @@ int main(int argc , char * argv[]){
           //      printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
           // }
 
-          char * arg1 = argv[0];
-          char * arg2 = argv[1];
-          char * arg3 = argv[2];
-          char * arg4 = argv[3];
+          char * arg1 = argv[1];
+          char * arg2 = argv[2];
+          char * arg3 = argv[3];
+          char * arg4 = argv[4];
      
 
           if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {

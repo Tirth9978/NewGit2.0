@@ -50,7 +50,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
      pid_t pid ;
      printf("Yes I am in :)");
      
-     if (arg2 == "--global"){
+     if (strcmp(arg2 , "--global") == 0){
           pid = fork();
           if (pid < 0){
                forkCreationProblem();
