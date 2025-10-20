@@ -64,7 +64,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          addConfigUser(arg4 , "Username") ;
                     }
                }
-               else if (arg3 == "user.email"){
+               else if (strcmp(arg3 , "user.email") == 0){
                     if (arg4 == NULL){
                          NotFoundUserName();
                     }
