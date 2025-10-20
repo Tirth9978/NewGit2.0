@@ -48,7 +48,6 @@ int findMainConfigFile (){
 
 void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg4) {
      pid_t pid ;
-     printf("Yes I am in :)");
      
      if (strcmp(arg2 , "--global") == 0){
           pid = fork();
@@ -56,9 +55,8 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                forkCreationProblem();
                exit(1);
           }
-          printf("Yes I am in --global:)");
           if (pid == 0){
-               if (arg3 == "user.name"){
+               if (strcmp(arg3 , "user.name") == 0){
                     if (arg4 == NULL){
                          NotFoundUserName();
                     }
