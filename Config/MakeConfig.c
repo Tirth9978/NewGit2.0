@@ -48,13 +48,14 @@ int findMainConfigFile (){
 
 void SecondAgrumentChecking(char * argv[]) {
      pid_t pid ;
+     printf("Yes I am in :)");
      if (argv[2] == "--global"){
           pid = fork();
           if (pid < 0){
                forkCreationProblem();
                exit(1);
           }
-
+          printf("Yes I am in --global:)");
           if (pid == 0){
                if (argv[3] == "user.name"){
                     if (argv[4] == NULL){
@@ -63,6 +64,7 @@ void SecondAgrumentChecking(char * argv[]) {
                     else {
                          if (!findMainConfigFile()){
                               makeFile();
+                              printf("Yes I am in username:)");
                          }
                     }
                }
