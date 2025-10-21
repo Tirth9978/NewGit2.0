@@ -162,7 +162,7 @@ void addConfigUser(char *str, char *type) {
 }
 
 void ReadingConfigData() {
-     char home = getenv("HOME");
+     char* home = getenv("HOME");
 
      if (home == NULL){
           forkCreationProblem();
@@ -172,18 +172,19 @@ void ReadingConfigData() {
      char filePath[512];
      snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
 
-     FILE * file = fopen(filePath , "r") ;
-     printf("File Open \n");
+     FILE * file = fopen(filePath, "r");
+
      if (file == NULL) {
           printf("Error: Could not open configuration file at %s\n", filePath);
           return;
      }
+
      char line[256];
      while (fgets(line, sizeof(line), file) != NULL) {
           // Remove trailing newline character if present
           line[strcspn(line, "\n")] = '\0';
           printf("%s\n", line);
      }
-     fclose(file);
-     return ;
-}    
+
+    fclose(file);
+}
