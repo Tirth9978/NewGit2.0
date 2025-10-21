@@ -93,6 +93,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                exit(1);
           }
           if (pid == 0){
+               printf("I am in the --info\n")
                ReadingConfigData();
           }
           else {
@@ -172,7 +173,7 @@ void ReadingConfigData() {
      snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
 
      FILE * file = fopen(filePath , "r") ;
-
+     printf("File Open \n");
      if (file == NULL) {
           printf("Error: Could not open configuration file at %s\n", filePath);
           return;
