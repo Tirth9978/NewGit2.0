@@ -18,7 +18,7 @@ void gettingVersionInfo() {
      FILE * file ;
      char buffer[256];
 
-     file = fopen("info.txt" , "r");
+     file = fopen("Version_Info/info.txt" , "r");
 
      if (file == NULL){
           forkCreationProblem();
@@ -91,7 +91,7 @@ int main(int argc , char * argv[]){
           if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
-          else if (arg_count >= 1 && strcmp(child_argv[0] , "--version")) {
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
 
                gettingVersionInfo();
           }
