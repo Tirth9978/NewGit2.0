@@ -7,6 +7,7 @@ void invalidCommand();
 // user...
 void userConfig() ;
 void NotFoundUserName() ;
+void SyntaxInvalid() ;
 
 // File 
 void fileCreationConfigError() ;

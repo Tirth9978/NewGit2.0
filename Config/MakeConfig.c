@@ -86,6 +86,26 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                waitpid(pid , &status , 0);
           }
      }
+     else if (strcmp(arg2 , "--info")) {
+          pid = fork() ;
+          if (pid < 0){
+               forkCreationProblem();
+               exit(1);
+          }
+          if (pid == 0){
+               if (arg3 == NULL && arg4 = NULL) {
+                    ReadingConfigData();
+               }
+               else {
+                    SyntaxInvalid();
+                    exit(12);
+               }
+          }
+          else {
+               int status ;
+               waitpid(pid , &status , 0);
+          }
+     }
      else {
           printf("Sorry :(");
      }
@@ -145,3 +165,30 @@ void addConfigUser(char *str, char *type) {
     printf(CYN "NewGit2.0 --- 1.0.1\n" END);
     return;
 }
+
+void ReadingConfigData() {
+     char home = getenv("HOME");
+
+     if (home == NULL){
+          forkCreationProblem();
+          return;
+     }
+
+     char filePath[512];
+     snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
+
+     FILE * file = fopen(filePath , "r") ;
+
+     if (file == NULL) {
+          printf("Error: Could not open configuration file at %s\n", filePath);
+          return;
+     }
+     char line[256];
+     while (fgets(line, sizeof(line), file) != NULL) {
+          // Remove trailing newline character if present
+          line[strcspn(line, "\n")] = '\0';
+          printf("%s\n", line);
+     }
+     fclose(file);
+     return ;
+}    

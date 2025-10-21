@@ -36,6 +36,11 @@ void NotFoundUserName() {
      return ;
 }
 
+void SyntaxInvalid() {
+     printf( RED "Invalid Command\n" END );
+     return ;
+}
+
 // -------------------------------------------- File --------------------------------------------//
 void fileCreationConfigError()  {
      printf(RED "Here , There is a error in the file creation , Please Try again leter :(" END);
