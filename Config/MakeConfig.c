@@ -93,7 +93,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                exit(1);
           }
           if (pid == 0){
-               printf("I am in the --info\n")
+               printf("I am in the --info\n");
                ReadingConfigData();
           }
           else {
