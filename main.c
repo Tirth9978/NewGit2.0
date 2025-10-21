@@ -18,7 +18,7 @@ void gettingVersionInfo() {
      FILE * file ;
      char buffer[256];
 
-     file = fopen("Version_Info/info.txt" , "r");
+     file = fopen("info.txt" , "r");
 
      if (file == NULL){
           forkCreationProblem();
