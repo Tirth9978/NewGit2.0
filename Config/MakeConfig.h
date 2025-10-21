@@ -5,5 +5,6 @@ int findMainConfigFile();
 void SecondAgrumentChecking();
 void makeFile();
 void addConfigUser(); 
+void ReadingConfigData();
 
 #endif
