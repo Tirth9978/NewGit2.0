@@ -185,6 +185,7 @@ void ReadingConfigData() {
           line[strcspn(line, "\n")] = '\0';
           printf("%s\n", line);
      }
-
-    fclose(file);
+     printf(YEL "Thank You for using NewGit2.0\n" END);
+     printf(CYN "NewGit2.0 --- 1.0.1\n" END);
+     fclose(file);
 }
