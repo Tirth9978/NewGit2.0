@@ -93,13 +93,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                exit(1);
           }
           if (pid == 0){
-               if (arg3 == NULL && arg4 == NULL) {
-                    ReadingConfigData();
-               }
-               else {
-                    SyntaxInvalid();
-                    exit(12);
-               }
+               ReadingConfigData();
           }
           else {
                int status ;
