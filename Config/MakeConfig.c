@@ -86,7 +86,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                waitpid(pid , &status , 0);
           }
      }
-     else if (strcmp(arg2 , "--info")) {
+     else if (strcmp(arg2 , "--info") == 0) {
           pid = fork() ;
           if (pid < 0){
                forkCreationProblem();
