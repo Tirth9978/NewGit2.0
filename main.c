@@ -5,6 +5,34 @@
 #include "Config/MakeConfig.h"
 #include "Errors/errors.h"
 
+#define RED "\x1B[31m"
+#define GRN "\x1B[32m"
+#define YEL "\x1B[33m"
+#define BLU "\x1B[34m"
+#define MAG "\x1B[35m"
+#define CYN "\x1B[36m"
+#define WHT "\x1B[37m"
+#define END "\033[0m"
+
+void gettingVersionInfo() {
+     FILE * file ;
+     char buffer[256];
+
+     file = fopen("Version_Info/info.txt" , "r");
+
+     if (file == NULL){
+          forkCreationProblem();
+          return ;
+     }
+     if (fgets(buffer, sizeof(buffer), fptr) != NULL) {
+          printf(YEL "Thank You for using NewGit2.0\n" END);
+          printf( CYN "NewGit2.0 Version :- %s\n" END , buffer); // Print the read line
+     } else {
+          printf( RED "Error: Could not read the first line or file is empty.\n" END ) ;
+     }
+     return ;
+}
+
 int main(int argc , char * argv[]){
      int fd[2];
      pid_t pid ;
@@ -62,7 +90,11 @@ int main(int argc , char * argv[]){
 
           if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
-          } else {
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "--version")) {
+               gettingVersionInfo();
+          }
+          else {
                invalidCommand();
           }
           
