@@ -24,7 +24,7 @@ void gettingVersionInfo() {
           forkCreationProblem();
           return ;
      }
-     if (fgets(buffer, sizeof(buffer), fptr) != NULL) {
+     if (fgets(buffer, sizeof(buffer), file) != NULL) {
           printf(YEL "Thank You for using NewGit2.0\n" END);
           printf( CYN "NewGit2.0 Version :- %s\n" END , buffer); // Print the read line
      } else {
