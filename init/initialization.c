@@ -5,7 +5,7 @@
 #include <errno.h>    // For errno
 #include <unistd.h>
 #include "initialization.h"
-#include "errors.h"
+#include "Errors/errors.h"
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
