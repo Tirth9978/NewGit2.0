@@ -18,9 +18,8 @@
 
 void makingDotGitFolder(){
      const char * folderName = ".git";
-     mode_t  permissions  = 0755 ;
 
-     if (mkdir(folderName , permissions) == 0) {
+     if (mkdir(folderName , 0755) == 0) {
           sleep(3);
           makingStagingIdInfoFile();
      }
@@ -46,9 +45,8 @@ void makingStagingIdInfoFile() {
 
 void makingStagingIdsFolder() {
      const char * folderName = ".git/StagingInfo";
-     mode_t  permissions  = 0755 ;
 
-     if (mkdir(folderName , permissions) == 0) {
+     if (mkdir(folderName , 0755) == 0) {
           sleep(3);
           printf( GRN "Initialized Empty Git Repo\n" END);
           printf( YEL "Thnak You using NewGit2.0\n" END );
