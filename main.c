@@ -92,8 +92,13 @@ int main(int argc , char * argv[]){
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
-
                gettingVersionInfo();
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0) {
+               
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
+               
           }
           else {
                invalidCommand();

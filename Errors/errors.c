@@ -50,3 +50,7 @@ void writingConfigError() {
      printf(RED "Sorry , There is problem to config user :(\n" END);
      return ;
 }
+void fileCreationErrorInDotGit() {
+     printf( RED "There is the problem in initialization of the git repo :( , Please try again leter \n" END );
+     return ;
+}

@@ -12,4 +12,5 @@ void SyntaxInvalid() ;
 // File 
 void fileCreationConfigError() ;
 void writingConfigError();
+void fileCreationErrorInDotGit() ;
 #endif
