@@ -98,7 +98,7 @@ int main(int argc , char * argv[]){
                
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
-               
+               makingDotGitFolder();
           }
           else {
                invalidCommand();

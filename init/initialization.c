@@ -40,8 +40,8 @@ void makingStagingIdInfoFile() {
           return ;
      }
      fclose(file);
-
-
+     
+     makingStagingIdsFolder();
 }
 
 void makingStagingIdsFolder() {
