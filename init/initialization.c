@@ -18,7 +18,6 @@
 
 void makingDotGitFolder(){
      const char * folderName = ".git";
-     printf("First\n");
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);
           makingStagingIdInfoFile();
@@ -31,7 +30,6 @@ void makingDotGitFolder(){
 
 void makingStagingIdInfoFile() {
      const char * filePath = ".git/idInfo.txt";
-     printf("Second\n");
      FILE * file = fopen(filePath , "w");
 
      if (file == NULL) {
