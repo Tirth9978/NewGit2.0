@@ -17,7 +17,7 @@
 #define END "\033[0m"
 
 void makingDotGitFolder(){
-     const char * folderName = ".git";
+     const char * folderName = ".newgit";
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);
           makingStagingIdInfoFile();
@@ -29,7 +29,7 @@ void makingDotGitFolder(){
 }
 
 void makingStagingIdInfoFile() {
-     const char * filePath = ".git/idInfo.txt";
+     const char * filePath = ".newgit/idInfo.txt";
      FILE * file = fopen(filePath , "w");
 
      if (file == NULL) {
@@ -42,7 +42,7 @@ void makingStagingIdInfoFile() {
 }
 
 void makingStagingIdsFolder() {
-     const char * folderName = ".git/StagingInfo";
+     const char * folderName = ".newgit/StagingInfo";
 
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);

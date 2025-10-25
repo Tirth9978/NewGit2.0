@@ -54,3 +54,12 @@ void fileCreationErrorInDotGit() {
      printf( RED "There is the problem in initialization of the git repo :( , Please try again leter \n" END );
      return ;
 }
+
+
+
+// -------------------------------------------- Staging --------------------------------------------//
+
+void faultStaging() {
+     printf(RED "There is a problem with the staging :(, Please Try Again Leter ....\n" END);
+     return ;
+}

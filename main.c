@@ -21,6 +21,7 @@ void gettingVersionInfo() {
      file = fopen("Version_Info/info.txt" , "r");
 
      if (file == NULL){
+          printf("Problem Here\n")
           forkCreationProblem();
           return ;
      }
@@ -76,12 +77,7 @@ int main(int argc , char * argv[]){
           child_argv[arg_count] = NULL; // end of argv[]
 
           close(fd[0]);
-          // ✅ Child received argv[] as separate elements
-          // printf("Child received arguments:\n");
-          // for (int i = 0; i < arg_count; i++) {
-          //      printf("  argv[%d] = %s\n", i + 1, child_argv[i]);
-          // }
-
+          
           char * arg1 = argv[1];
           char * arg2 = argv[2];
           char * arg3 = argv[3];
@@ -99,6 +95,9 @@ int main(int argc , char * argv[]){
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
                makingDotGitFolder();
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[0] , ".") == 0){
+               
           }
           else {
                invalidCommand();

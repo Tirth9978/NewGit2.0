@@ -13,4 +13,7 @@ void SyntaxInvalid() ;
 void fileCreationConfigError() ;
 void writingConfigError();
 void fileCreationErrorInDotGit() ;
+
+// Staging 
+void faultStaging();
 #endif
