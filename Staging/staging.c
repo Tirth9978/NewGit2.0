@@ -62,9 +62,9 @@ char* getDateTime() {
     return buffer;
 }
 
+// ✅ Copy single file from src → dest
 void copy_file(const char *src_path, const char *dest_path) {
      FILE *src = fopen(src_path, "rb");
-     printf("I am Tirth\n");
      if (!src) {
           faultStaging();
           return;
@@ -78,70 +78,63 @@ void copy_file(const char *src_path, const char *dest_path) {
      }
 
      char buffer[BUFFER_SIZE];
-     printf("I am Tirth\n");
-     size_t bytes; 
+     size_t bytes;
      while ((bytes = fread(buffer, 1, BUFFER_SIZE, src)) > 0) {
           fwrite(buffer, 1, bytes, dest);
      }
 
      fclose(src);
      fclose(dest);
-     return ;
 }
 
-void movingFilesToStaheFolder(char * filepath , char* id) {
-     strcat(filepath , id);
+// ✅ Copy all files from current directory into `.newgit/StagingInfo/<id>/`
+void movingFilesToStaheFolder(char *filepath, const char *id) {
+     // Build final folder path
+     char final_path[512];
+     snprintf(final_path, sizeof(final_path), "%s%s", filepath, id);
 
-     mkdir(filepath);
-     printf("I am Tirth\n");
-     DIR * dir = opendir(".");
+     mkdir(final_path);
 
-     if (!dir){
+     DIR *dir = opendir(".");
+     if (!dir) {
           faultStaging();
-          return ;
+          return;
      }
 
      struct dirent *entry;
-     
-     while((entry = readdir(dir)) != NULL) {
-          // Skip directories and hidden files (. .. etc)
-          if (entry->d_type == DT_DIR) continue;
+     while ((entry = readdir(dir)) != NULL) {
+          // Skip hidden files and folders (. .. .newgit etc.)
           if (entry->d_name[0] == '.') continue;
-          
-          char src_path[512];
-          char dest_path[512];
+          if (entry->d_type == DT_DIR) continue;
 
+          char src_path[512], dest_path[512];
           snprintf(src_path, sizeof(src_path), "%s", entry->d_name);
-          snprintf(dest_path, sizeof(dest_path), "%s/%s", filepath, entry->d_name);
+          snprintf(dest_path, sizeof(dest_path), "%s/%s", final_path, entry->d_name);
 
           copy_file(src_path, dest_path);
      }
-     printf("I am Tirth\n");
+
      closedir(dir);
-     printf(GRN "Your Repo Successfully added to the Staging Environment :)\n" END);
+
+     printf(GRN "✅ Repo successfully added to Staging Environment!\n" END);
      printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
-     return ;
 }
 
+// ✅ Main function to add staging info
 void addingStaging() {
-     const char * id = generateId() ; 
+     const char *id = generateId();
+     const char *filePath = ".newgit/idInfo.txt";
 
-     const char * filePath = ".newgit/idInfo.txt" ; 
 
-     FILE * file = fopen(filePath , "a");
-
+     FILE *file = fopen(filePath, "a");
      if (file == NULL) {
           faultStaging();
-          return ;
+          return;
      }
 
-     fprintf(file , "Id :%s\n" , id);
-     fprintf(file , "Day/Time: %s\n",getDateTime());
-
+     fprintf(file, "Id: %s\n", id);
+     fprintf(file, "Day/Time: %s\n", getDateTime());
      fclose(file);
 
-     movingFilesToStaheFolder(".newgit/StagingInfo/",id) ;
-
-     return ;
+     movingFilesToStaheFolder(".newgit/StagingInfo/", id);
 }
-
