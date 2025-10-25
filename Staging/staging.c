@@ -4,6 +4,8 @@
 #include <string.h>
 #include <dirent.h>
 #include <errno.h>
+#include <unistd.h>
+#include <sys/stat.h>
 #include "staging.h"
 #include "../Errors/errors.h"
 
@@ -62,65 +64,83 @@ char* getDateTime() {
     return buffer;
 }
 
-// ✅ Copy single file from src → dest
 void copy_file(const char *src_path, const char *dest_path) {
-     FILE *src = fopen(src_path, "rb");
-     if (!src) {
-          faultStaging();
-          return;
-     }
+    FILE *src = fopen(src_path, "rb");
+    if (!src) {
+        faultStaging();
+        return;
+    }
 
-     FILE *dest = fopen(dest_path, "wb");
-     if (!dest) {
-          faultStaging();
-          fclose(src);
-          return;
-     }
+    FILE *dest = fopen(dest_path, "wb");
+    if (!dest) {
+        faultStaging();
+        fclose(src);
+        return;
+    }
 
-     char buffer[BUFFER_SIZE];
-     size_t bytes;
-     while ((bytes = fread(buffer, 1, BUFFER_SIZE, src)) > 0) {
-          fwrite(buffer, 1, bytes, dest);
-     }
+    char buffer[BUFFER_SIZE];
+    size_t bytes;
+    while ((bytes = fread(buffer, 1, BUFFER_SIZE, src)) > 0) {
+        fwrite(buffer, 1, bytes, dest);
+    }
 
-     fclose(src);
-     fclose(dest);
+    fclose(src);
+    fclose(dest);
 }
 
-// ✅ Copy all files from current directory into `.newgit/StagingInfo/<id>/`
-void movingFilesToStaheFolder(char *filepath,char *id) {
-     // Build final folder path
-     char final_path[512];
-     snprintf(final_path, sizeof(final_path), "%s%s", filepath, id);
+// ✅ Recursive function to copy directories and files
+void copy_recursive(const char *src_dir, const char *dest_dir) {
+     DIR *dir = opendir(src_dir);
+     if (!dir) return;
 
-     mkdir(final_path, 0777);  // Creates directory with full permissions for all users
-
-     DIR *dir = opendir(".");
-     if (!dir) {
-          faultStaging();
-          return;
-     }
+     mkdir(dest_dir, 0777);
 
      struct dirent *entry;
      while ((entry = readdir(dir)) != NULL) {
-          // Skip hidden files and folders (. .. .newgit etc.)
-          if (entry->d_name[0] == '.') continue;
-          if (entry->d_type == DT_DIR) continue;
+          // Skip . and ..
+          if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+               continue;
 
-          char src_path[512], dest_path[512];
-          snprintf(src_path, sizeof(src_path), "%s", entry->d_name);
-          snprintf(dest_path, sizeof(dest_path), "%s/%s", final_path, entry->d_name);
+          // Skip .newgit folder itself to prevent recursion into staging area
+          if (strcmp(entry->d_name, ".newgit") == 0)
+               continue;
 
-          copy_file(src_path, dest_path);
+          char src_path[512];
+          char dest_path[512];
+
+          snprintf(src_path, sizeof(src_path), "%s/%s", src_dir, entry->d_name);
+          snprintf(dest_path, sizeof(dest_path), "%s/%s", dest_dir, entry->d_name);
+
+          struct stat st;
+          stat(src_path, &st);
+
+          if (S_ISDIR(st.st_mode)) {
+               // If directory → recurse
+               copy_recursive(src_path, dest_path);
+          } else {
+               // If file → copy
+               copy_file(src_path, dest_path);
+          }
      }
 
-     closedir(dir);
+    closedir(dir);
+}
+
+// ✅ Main function to handle staging copy
+void movingFilesToStaheFolder(const char *basePath, const char *id) {
+     char final_path[512];
+     snprintf(final_path, sizeof(final_path), "%s%s", basePath, id);
+
+     mkdir(final_path, 0777);
+
+     // Copy everything recursively from current folder
+     copy_recursive(".", final_path);
 
      printf(GRN "✅ Repo successfully added to Staging Environment!\n" END);
      printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
 }
 
-// ✅ Main function to add staging info
+// ✅ Add staging info and perform copy
 void addingStaging() {
      const char *id = generateId();
      const char *filePath = ".newgit/idInfo.txt";
