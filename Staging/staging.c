@@ -127,7 +127,7 @@ void copy_recursive(const char *src_dir, const char *dest_dir) {
 }
 
 // ✅ Main function to handle staging copy
-void movingFilesToStaheFolder(const char *basePath, char *id) {
+void movingFilesToStaheFolder(char *basePath, char *id) {
      char final_path[512];
      snprintf(final_path, sizeof(final_path), "%s%s", basePath, id);
 
