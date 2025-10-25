@@ -4,6 +4,7 @@
 #include <string.h>     // for strlen()
 #include "Config/MakeConfig.h"
 #include "Errors/errors.h"
+#include "Staging/staging.h"
 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -90,14 +91,11 @@ int main(int argc , char * argv[]){
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
                gettingVersionInfo();
           }
-          else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0) {
-               
-          }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
                makingDotGitFolder();
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[0] , ".") == 0){
-               
+               addingStaging();
           }
           else {
                invalidCommand();
