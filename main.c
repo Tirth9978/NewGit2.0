@@ -94,7 +94,7 @@ int main(int argc , char * argv[]){
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
                makingDotGitFolder();
           }
-          else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[0] , ".") == 0){
+          else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[1] , ".") == 0){
                addingStaging();
           }
           else {
