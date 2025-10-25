@@ -86,6 +86,7 @@ void addingStaging() {
 
 void copy_file(const char *src_path, const char *dest_path) {
      FILE *src = fopen(src_path, "rb");
+     printf("I am Tirth\n");
      if (!src) {
           faultStaging();
           return;
@@ -99,7 +100,7 @@ void copy_file(const char *src_path, const char *dest_path) {
      }
 
      char buffer[BUFFER_SIZE];
-     
+     printf("I am Tirth\n");
      size_t bytes; 
      while ((bytes = fread(buffer, 1, BUFFER_SIZE, src)) > 0) {
           fwrite(buffer, 1, bytes, dest);
@@ -114,7 +115,7 @@ void movingFilesToStaheFolder(char * filepath , char* id) {
      strcat(filepath , id);
 
      mkdir(filepath);
-
+     printf("I am Tirth\n");
      DIR * dir = opendir(".");
 
      if (!dir){
@@ -137,7 +138,7 @@ void movingFilesToStaheFolder(char * filepath , char* id) {
 
           copy_file(src_path, dest_path);
      }
-
+     printf("I am Tirth\n");
      closedir(dir);
      printf(GRN "Your Repo Successfully added to the Staging Environment :)\n" END);
      printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
