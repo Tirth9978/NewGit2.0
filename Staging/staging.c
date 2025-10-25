@@ -93,7 +93,7 @@ void movingFilesToStaheFolder(char *filepath,char *id) {
      char final_path[512];
      snprintf(final_path, sizeof(final_path), "%s%s", filepath, id);
 
-     mkdir(final_path);
+     mkdir(final_path, 0777);  // Creates directory with full permissions for all users
 
      DIR *dir = opendir(".");
      if (!dir) {

@@ -19,7 +19,7 @@ void gettingVersionInfo() {
      FILE * file ;
      char buffer[256];
 
-     file = fopen("Version_Info/info.txt" , "r");
+     file = fopen("VersionInfo.txt" , "r");
 
      if (file == NULL){
           printf("Problem Here\n");
