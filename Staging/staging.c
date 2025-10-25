@@ -62,28 +62,6 @@ char* getDateTime() {
     return buffer;
 }
 
-void addingStaging() {
-     const char * id = generateId() ; 
-
-     const char * filePath = ".newgit/idInfo.txt" ; 
-
-     FILE * file = fopen(filePath , "a");
-
-     if (file == NULL) {
-          faultStaging();
-          return ;
-     }
-
-     fprintf(file , "Id :%s\n" , id);
-     fprintf(file , "Day/Time: %s\n",getDateTime());
-
-     fclose(file);
-
-     movingFilesToStaheFolder(".newgit/StagingInfo/",id) ;
-
-     return ;
-}
-
 void copy_file(const char *src_path, const char *dest_path) {
      FILE *src = fopen(src_path, "rb");
      printf("I am Tirth\n");
@@ -144,3 +122,26 @@ void movingFilesToStaheFolder(char * filepath , char* id) {
      printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
      return ;
 }
+
+void addingStaging() {
+     const char * id = generateId() ; 
+
+     const char * filePath = ".newgit/idInfo.txt" ; 
+
+     FILE * file = fopen(filePath , "a");
+
+     if (file == NULL) {
+          faultStaging();
+          return ;
+     }
+
+     fprintf(file , "Id :%s\n" , id);
+     fprintf(file , "Day/Time: %s\n",getDateTime());
+
+     fclose(file);
+
+     movingFilesToStaheFolder(".newgit/StagingInfo/",id) ;
+
+     return ;
+}
+
