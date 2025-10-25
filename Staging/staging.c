@@ -88,7 +88,7 @@ void copy_file(const char *src_path, const char *dest_path) {
 }
 
 // ✅ Copy all files from current directory into `.newgit/StagingInfo/<id>/`
-void movingFilesToStaheFolder(char *filepath, const char *id) {
+void movingFilesToStaheFolder(char *filepath,char *id) {
      // Build final folder path
      char final_path[512];
      snprintf(final_path, sizeof(final_path), "%s%s", filepath, id);
