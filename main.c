@@ -22,7 +22,7 @@ void gettingVersionInfo() {
      file = fopen("Version_Info/info.txt" , "r");
 
      if (file == NULL){
-          printf("Problem Here\n")
+          printf("Problem Here\n");
           forkCreationProblem();
           return ;
      }
