@@ -79,11 +79,13 @@ void makingDotGitFolder(){
 
 void makingStagingIdInfoFile() {
      char *current_dir = gettingPwd();
+     printf("%s" , current_dir);
      if (checkInMainFolder(current_dir)) {
           printf(GRN "This repo already Initialized :)\n" END);
           printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
           return ;
      }
+     printf("%s" , current_dir);
      if (current_dir == NULL) {
           ProblemInInit();
           return ; 
