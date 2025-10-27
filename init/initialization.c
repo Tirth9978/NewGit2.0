@@ -37,7 +37,7 @@ bool checkInMainFolder(char * pwd) {
      char file_path[1024];
      snprintf(file_path, sizeof(file_path), "%s/NewGit2.0/InitInfo.txt", home);
 
-     FILE * file = fopen(file_path);
+     FILE * file = fopen(file_path , "r");
 
      if (!file){
           forkCreationProblem();
