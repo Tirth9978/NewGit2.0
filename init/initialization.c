@@ -4,6 +4,7 @@
 #include <string.h>     // for strlen()
 #include <errno.h>    // For errno
 #include <unistd.h>
+#include<stdlib.h>
 #include "initialization.h"
 #include "../Errors/errors.h"
 
@@ -15,6 +16,11 @@
 #define CYN "\x1B[36m"
 #define WHT "\x1B[37m"
 #define END "\033[0m"
+
+char * gettingPwd() {
+     char *cwd = getcwd(NULL, 0);  
+     return cwd;  
+}
 
 void makingDotGitFolder(){
      const char * folderName = ".newgit";
@@ -29,6 +35,12 @@ void makingDotGitFolder(){
 }
 
 void makingStagingIdInfoFile() {
+     char *current_dir = gettingPwd();
+
+     if (current_dir == NULL) {
+          ProblemInInit();
+          return ; 
+     }
      const char * filePath = ".newgit/idInfo.txt";
      FILE * file = fopen(filePath , "w");
 
@@ -37,8 +49,10 @@ void makingStagingIdInfoFile() {
           return ;
      }
      fclose(file);
-
+     
+     makingInitInfoFile(current_dir);
      makingStagingIdsFolder();
+     return ;
 }
 
 void makingStagingIdsFolder() {
@@ -53,5 +67,30 @@ void makingStagingIdsFolder() {
      else {
           forkCreationProblem() ;
      }
+     return ;
+}
+
+void makingInitInfoFile(char * pwd) {
+     const char * home = getenv("HOME");
+
+     if (!home){
+          ProblemInInit();
+          return ;
+     }
+          
+     char file_path[256];
+     snprintf(file_path, sizeof(file_path), "%s/NewGit2.0/InitInfo.txt", home);
+
+     FILE * file = fopen(file_path , "a");
+
+     if (!file) {
+          ProblemInInit();
+          return ;
+     }
+
+     fprintf(file, "%s\n" , pwd); // Add a newline after "Hello"
+
+     // Close the file
+     fclose(file);
      return ;
 }

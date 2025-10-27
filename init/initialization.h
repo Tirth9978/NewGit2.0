@@ -4,5 +4,6 @@
 void makingDotGitFolder();
 void makingStagingIdInfoFile() ;
 void makingStagingIdsFolder() ; 
+void makingInitInfoFile();
 
 #endif

@@ -14,6 +14,9 @@ void fileCreationConfigError() ;
 void writingConfigError();
 void fileCreationErrorInDotGit() ;
 
+// Init
+void ProblemInInit();
+
 // Staging 
 void faultStaging();
 #endif

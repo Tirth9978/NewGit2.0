@@ -63,3 +63,12 @@ void faultStaging() {
      printf(RED "There is a problem with the staging :(, Please Try Again Leter ....\n" END);
      return ;
 }
+
+// -------------------------------------------- Init --------------------------------------------//
+
+
+void ProblemInInit() {
+     printf( RED "Problem found in initialization\n" END );
+     printf( RED "Try Again Leter :(\n" END );
+     return ;
+}
