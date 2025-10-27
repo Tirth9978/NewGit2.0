@@ -66,6 +66,13 @@ bool checkInMainFolder(char * pwd) {
 }
 
 void makingDotGitFolder(){
+     char *current_dir = gettingPwd();
+     printf("%s" , current_dir);
+     if (checkInMainFolder(current_dir)) {
+          printf(GRN "This repo already Initialized :)\n" END);
+          printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
+          return ;
+     }
      const char * folderName = ".newgit";
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);
@@ -77,16 +84,10 @@ void makingDotGitFolder(){
      return ;
 }
 
-void makingStagingIdInfoFile() {
-     char *current_dir = gettingPwd();
-     printf("%s" , current_dir);
-     if (checkInMainFolder(current_dir)) {
-          printf(GRN "This repo already Initialized :)\n" END);
-          printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
-          return ;
-     }
-     printf("%s" , current_dir);
-     if (current_dir == NULL) {
+void makingStagingIdInfoFile(char * pwd) {
+     
+
+     if (pwd == NULL) {
           ProblemInInit();
           return ; 
      }
@@ -99,7 +100,7 @@ void makingStagingIdInfoFile() {
      }
      fclose(file);
      
-     makingInitInfoFile(current_dir);
+     makingInitInfoFile(pwd);
      makingStagingIdsFolder();
      return ;
 }
