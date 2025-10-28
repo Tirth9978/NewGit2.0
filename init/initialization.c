@@ -89,7 +89,7 @@ void makingDotGitFolder(){
      const char * folderName = ".newgit";
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);
-          makingStagingIdInfoFile();
+          makingStagingIdInfoFile(current_dir);
      }
      else {
           forkCreationProblem() ;
