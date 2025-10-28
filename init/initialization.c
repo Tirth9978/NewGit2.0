@@ -77,6 +77,7 @@ void makingDotGitFolder(){
           printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
           return ;
      }
+     sleep(3);
      const char * folderName = ".newgit";
      if (mkdir(folderName , 0755) == 0) {
           sleep(3);
