@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include<stdlib.h>
 #include <stdbool.h>  
+#include <pwd.h>
 #include "initialization.h"
 #include "../Errors/errors.h"
 
@@ -40,7 +41,7 @@ bool checkInMainFolder(char * pwd) {
      snprintf(file_path, sizeof(file_path), "%s/NewGit2.0/InitInfo.txt", home);
 
      FILE * file = fopen(file_path , "r");
-
+     printf("I am more \n");
      if (!file){
           forkCreationProblem();
           return 0;
