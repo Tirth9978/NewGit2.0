@@ -52,6 +52,7 @@ bool checkInMainFolder(char * pwd) {
      bool found = false;
 
      while (fgets(line, sizeof(line), file)) {
+          printf("Tirth\n");
           // Remove newline character at the end
           size_t len = strlen(line);
           if (len > 0 && line[len - 1] == '\n') {
@@ -66,6 +67,7 @@ bool checkInMainFolder(char * pwd) {
      }
 
      fclose(file); // Closing the file is the important .... :)
+     printf("7\n");
      return found;
 }
 
