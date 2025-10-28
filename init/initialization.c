@@ -32,9 +32,10 @@ bool checkInMainFolder(char * pwd) {
      const char * home = getenv("HOME");
      printf("I am Checking in Home :)\n");
      if (home == NULL) {
-          printf("I am Here :)\n");
-          forkCreationProblem();
-          return ;
+          struct passwd *pw = getpwuid(getuid());
+          if (pw != NULL) {
+               home = pw->pw_dir;
+          }
      }
 
      char file_path[1024];
