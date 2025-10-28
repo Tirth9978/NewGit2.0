@@ -30,7 +30,7 @@ bool checkInMainFolder(char * pwd) {
 
      const char * home = getenv("HOME");
      printf("I am Checking in Home :)\n");
-     if (!home) {
+     if (home == NULL) {
           printf("I am Here :)\n");
           forkCreationProblem();
           return ;
