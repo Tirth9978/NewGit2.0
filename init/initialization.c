@@ -19,6 +19,8 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
+#define VERSION "1.0.1"
+
 char *gettingPwd() {
      char *cwd = getcwd(NULL, 0);  // getcwd() allocates memory when first arg = NULL
      if (cwd == NULL) {
@@ -82,7 +84,7 @@ void makingDotGitFolder(){
      printf("%s" , current_dir);
      if (checkInMainFolder(current_dir)) {
           printf(GRN "This repo already Initialized :)\n" END);
-          printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
+          printf(CYN "NewGit2.0 --->"VERSION "\n" END);
           return ;
      }
      sleep(3);
@@ -127,7 +129,7 @@ void makingStagingIdsFolder() {
           sleep(3);
           printf( GRN "Initialized Empty Git Repo\n" END);
           printf( YEL "Thnak You using NewGit2.0\n" END );
-          printf(CYN "NewGit2.0 --> 1.0.1\n" END);
+          printf(CYN "NewGit2.0 -->"VERSION "\n" END);
      }
      else {
           forkCreationProblem() ;

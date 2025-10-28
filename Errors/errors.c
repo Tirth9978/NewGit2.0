@@ -10,6 +10,8 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
+#define VERSION "1.0.1"
+
 void invalidCommand() {
      printf(RED "Invalid Command . \n" END);
      printf(GRN "git <...> <....> <...> .. . . . " END);

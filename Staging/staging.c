@@ -20,6 +20,8 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
+#define VERSION "1.0.1"
+
 const char * generateId() {
      const char * data1 = "ASDFGHJKLZXCVBNMPOIUYTREWQ";
      const char * data2 = "1234567890";
@@ -137,7 +139,7 @@ void movingFilesToStaheFolder(char *basePath, char *id) {
      copy_recursive(".", final_path);
 
      printf(GRN "✅ Repo successfully added to Staging Environment!\n" END);
-     printf(CYN "NewGit2.0 ---> 1.0.1\n" END);
+     printf(CYN "NewGit2.0 --->" VERSION "\n" END);
 }
 
 // ✅ Add staging info and perform copy

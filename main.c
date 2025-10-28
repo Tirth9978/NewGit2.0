@@ -15,25 +15,7 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
-void gettingVersionInfo() {
-     FILE * file ;
-     char buffer[256];
-
-     file = fopen("VersionInfo.txt" , "r");
-
-     if (file == NULL){
-          printf("Problem Here\n");
-          forkCreationProblem();
-          return ;
-     }
-     if (fgets(buffer, sizeof(buffer), file) != NULL) {
-          printf(YEL "Thank You for using NewGit2.0\n" END);
-          printf( CYN "NewGit2.0 Version :- %s\n" END , buffer); // Print the read line
-     } else {
-          printf( RED "Error: Could not read the first line or file is empty.\n" END ) ;
-     }
-     return ;
-}
+#define VERSION "1.0.1"
 
 int main(int argc , char * argv[]){
      int fd[2];
@@ -89,7 +71,8 @@ int main(int argc , char * argv[]){
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
-               gettingVersionInfo();
+               printf( CYN "NewGit2.0\n" END );
+               printf( YEL "Thank You for using NewGit2.0\n" END );
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
                makingDotGitFolder();

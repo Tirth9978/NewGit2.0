@@ -16,6 +16,10 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
+
+#define VERSION "1.0.1"
+
+
 int findMainConfigFile (){
      const char *homeDir = getenv("HOME");
 
@@ -157,7 +161,7 @@ void addConfigUser(char *str, char *type) {
     // FIX 4: Correct the printf format string and syntax
     printf(GRN "%s Successfully config as %s\n" END, type, str);
     printf(YEL "Thank You for using NewGit2.0\n" END);
-    printf(CYN "NewGit2.0 --- 1.0.1\n" END);
+    printf(CYN "NewGit2.0 ---" VERSION END "\n");
     return;
 }
 
@@ -186,6 +190,6 @@ void ReadingConfigData() {
           printf("%s\n", line);
      }
      printf(YEL "Thank You for using NewGit2.0\n" END);
-     printf(CYN "NewGit2.0 --- 1.0.1\n" END);
+     printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      fclose(file);
 }
