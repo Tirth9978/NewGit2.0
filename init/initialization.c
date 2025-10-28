@@ -28,26 +28,26 @@ bool checkInMainFolder(char * pwd) {
      if (pwd == NULL) {
           return 0;
      }
-
+     printf("2\n");
      const char * home = getenv("HOME");
-     printf("I am Checking in Home :)\n");
+     printf("3\n");
      if (home == NULL) {
           struct passwd *pw = getpwuid(getuid());
           if (pw != NULL) {
                home = pw->pw_dir;
           }
      }
-
+     printf("4\n");
      char file_path[1024];
      snprintf(file_path, sizeof(file_path), "%s/NewGit2.0/InitInfo.txt", home);
 
      FILE * file = fopen(file_path , "r");
-     printf("I am more \n");
+     printf("5\n");
      if (!file){
           forkCreationProblem();
           return 0;
      }
-
+     printf("6\n");
      char line[1024];
      bool found = false;
 
@@ -71,6 +71,7 @@ bool checkInMainFolder(char * pwd) {
 
 void makingDotGitFolder(){
      char *current_dir = gettingPwd();
+     printf("1\n");
      printf("%s" , current_dir);
      if (checkInMainFolder(current_dir)) {
           printf(GRN "This repo already Initialized :)\n" END);
