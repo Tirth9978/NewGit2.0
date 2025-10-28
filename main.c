@@ -71,7 +71,7 @@ int main(int argc , char * argv[]){
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
-               printf( CYN "NewGit2.0\n" END );
+               printf( CYN "NewGit2.0 --->" VERSION "\n" END );
                printf( YEL "Thank You for using NewGit2.0\n" END );
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {

@@ -73,7 +73,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          NotFoundUserName();
                     }
                     else {
-                         if (strstr(arg4 , "@") != NULL && strstr(arg4 , ".com") != NULL){
+                         if (strstr(arg4 , "@") != NULL && (strstr(arg4 , ".com") != NULL || strstr(arg4 , ".in") != NULL)){
                               addConfigUser(arg4 , "Email") ;
                          }
                          else {
