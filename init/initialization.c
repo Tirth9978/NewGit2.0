@@ -19,9 +19,14 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
-char * gettingPwd() {
-     char *cwd = getcwd(NULL, 0);  
-     return cwd;  
+char *gettingPwd() {
+     char *cwd = getcwd(NULL, 0);  // getcwd() allocates memory when first arg = NULL
+     if (cwd == NULL) {
+          // Print why getcwd failed
+          fprintf(stderr, "Error: getcwd failed - %s\n", strerror(errno));
+          return NULL;
+     }
+     return cwd;  // caller must free() this
 }
 
 bool checkInMainFolder(char * pwd) {
