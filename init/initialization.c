@@ -28,26 +28,26 @@ bool checkInMainFolder(char * pwd) {
      if (pwd == NULL) {
           return 0;
      }
-     printf("2\n");
+
      const char * home = getenv("HOME");
-     printf("3\n");
+    
      if (home == NULL) {
           struct passwd *pw = getpwuid(getuid());
           if (pw != NULL) {
                home = pw->pw_dir;
           }
      }
-     printf("4\n");
+    
      char file_path[1024];
      snprintf(file_path, sizeof(file_path), "%s/NewGit2.0/InitInfo.txt", home);
 
      FILE * file = fopen(file_path , "r");
-     printf("5\n");
+  
      if (!file){
           forkCreationProblem();
           return 0;
      }
-     printf("6\n");
+  
      char line[1024];
      bool found = false;
 
@@ -67,7 +67,7 @@ bool checkInMainFolder(char * pwd) {
      }
 
      fclose(file); // Closing the file is the important .... :)
-     printf("7\n");
+ 
      return found;
 }
 
@@ -94,11 +94,13 @@ void makingDotGitFolder(){
 
 void makingStagingIdInfoFile(char * pwd) {
      
-
+     printf("1\n");
      if (pwd == NULL) {
+          printf("2\n");
           ProblemInInit();
           return ; 
      }
+     printf("3\n");
      const char * filePath = ".newgit/idInfo.txt";
      FILE * file = fopen(filePath , "w");
 
