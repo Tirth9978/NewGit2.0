@@ -14,7 +14,7 @@
 
 void invalidCommand() {
      printf(RED "Invalid Command . \n" END);
-     printf(GRN "git <...> <....> <...> .. . . . " END);
+     printf(GRN "git <...> <....> <...> .. . . . \n" END);
      return ;
 }
 
@@ -72,5 +72,19 @@ void faultStaging() {
 void ProblemInInit() {
      printf( RED "Problem found in initialization\n" END );
      printf( RED "Try Again Leter :(\n" END );
+     return ;
+}
+
+// -------------------------------------------- Init --------------------------------------------//
+void ForGotMessage() {
+     printf( RED "You forget the message . \n" END );
+     printf( YEL "Please add the commit message\n" END );
+     return ;
+}
+
+void Forgot_M() {
+     invalidCommand() ;
+     printf( GRN "Correct :\n" END );
+     printf( GRN "newgit commit -m <Message>\n" END );
      return ;
 }

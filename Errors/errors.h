@@ -19,4 +19,8 @@ void ProblemInInit();
 
 // Staging 
 void faultStaging();
+
+// Commit 
+void Forgot_M();
+void ForGotMessage() ;
 #endif

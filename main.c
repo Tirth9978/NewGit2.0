@@ -80,17 +80,20 @@ int main(int argc , char * argv[]){
           else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[1] , ".") == 0){
                addingStaging();
           }
+          else if (arg_count >= 1 && strcmp(child_argv[0],"commit") == 0 ){
+               if (strcmp(child_argv[1] , "-m")==0) {
+                    if (child_argv[2] == NULL) {
+                         Forgot_M();
+                    }
+                    
+               }
+               else {
+                    ForGotMessage() ;
+               }
+          }
           else {
                invalidCommand();
           }
-          
-          // if (argc <= 1){
-          //      invalidCommand(); 
-          // }
-          // if (argv[1] == "config"){
-          //      SecondAgrumentChecking(argv);
-          // }
-
      }
      else {
           close(fd[0]); // Close read end
