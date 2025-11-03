@@ -134,7 +134,7 @@ void appendMessage(char * message) {
           return ;
      }
 
-     printf("%s %s" , currCount.files , currCount.folders);
+     printf("%d %d" , currCount.files , currCount.folders);
 
      // //---------------------------------------------------------------------------
      // const char * filePath = ".newgit/idInfo.txt";
