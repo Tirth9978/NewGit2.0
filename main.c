@@ -87,6 +87,7 @@ int main(int argc , char * argv[]){
                     }
                     else {
                          char * message = child_argv[2];
+                         printf("%s" , message);
                          appendMessage(message);
                     }
                }
