@@ -126,14 +126,13 @@ void appendMessage(char * message) {
           problemInCommit();
           return ;
      }
-     printf("%s" , id);
      // Counting the Numbers-----------------------------------
-     // struct FileCount currCount =countCurrentDir(); 
-     // if (currCount.files == -1 && currCount.folders == -1) {
-     //      problemInCommit();
-     //      return ;
-     // }
-
+     struct FileCount currCount =countCurrentDir(); 
+     if (currCount.files == -1 && currCount.folders == -1) {
+          problemInCommit();
+          return ;
+     }
+     printf("%s %s" , currCount.files , currCount.folders);
 
      // //---------------------------------------------------------------------------
      // const char * filePath = ".newgit/idInfo.txt";
