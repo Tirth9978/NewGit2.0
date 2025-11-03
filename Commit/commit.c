@@ -122,6 +122,7 @@ void appendMessage(char * message) {
      // Getting Id : 
 
      char * id = getingId();
+     printf("%s",id);
      if (id == NULL){
           problemInCommit();
           return ;
@@ -132,7 +133,7 @@ void appendMessage(char * message) {
           problemInCommit();
           return ;
      }
-     
+
      printf("%s %s" , currCount.files , currCount.folders);
 
      // //---------------------------------------------------------------------------
