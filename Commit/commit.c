@@ -132,6 +132,7 @@ void appendMessage(char * message) {
           problemInCommit();
           return ;
      }
+     
      printf("%s %s" , currCount.files , currCount.folders);
 
      // //---------------------------------------------------------------------------
