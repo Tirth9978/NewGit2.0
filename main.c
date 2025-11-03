@@ -81,20 +81,17 @@ int main(int argc , char * argv[]){
                addingStaging();
           }
           else if (arg_count >= 1 && strcmp(child_argv[0],"commit") == 0 ){
-               printf("I am in the commit");
                if (strcmp(child_argv[1] , "-m")==0) {
                     if (child_argv[2] == NULL) {
                          ForGotMessage() ;
                     }
                     else {
                          char * message = child_argv[2];
-                         printf("%s" , message);
                          appendMessage(message);
                     }
                }
                else {
                     Forgot_M();
-                    
                }
           }
           else {
