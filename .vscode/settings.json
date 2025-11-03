@@ -1,6 +1,7 @@
 {
      "files.associations": {
           "initialization.h": "c",
-          "string.h": "c"
+          "string.h": "c",
+          "makeconfig.h": "c"
      }
 }

@@ -88,3 +88,9 @@ void Forgot_M() {
      printf( GRN "newgit commit -m <Message>\n" END );
      return ;
 }
+
+void problemInCommit(){
+     printf(RED "Problem in commiting the message :(\n" END);
+     printf(RED "Please Try again leter ...\n" END);
+     return ;
+}

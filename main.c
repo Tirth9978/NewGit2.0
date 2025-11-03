@@ -83,12 +83,16 @@ int main(int argc , char * argv[]){
           else if (arg_count >= 1 && strcmp(child_argv[0],"commit") == 0 ){
                if (strcmp(child_argv[1] , "-m")==0) {
                     if (child_argv[2] == NULL) {
-                         Forgot_M();
+                         ForGotMessage() ;
                     }
-                    
+                    else {
+                         char * message = child_argv[2];
+                         appendMessage(message);
+                    }
                }
                else {
-                    ForGotMessage() ;
+                    Forgot_M();
+                    
                }
           }
           else {
