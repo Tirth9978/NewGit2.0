@@ -78,7 +78,7 @@ char *getingId() {
      while (fgets(buffer, sizeof(buffer), file) != NULL) {
           // Look for line starting with "Id:"
           if (strncmp(buffer, "Id:", 3) == 0) {
-               strcpy(id, buffer + 2);   // copy text after "Id:"
+               strcpy(id, buffer + 3);   // copy text after "Id:"
                // remove newline if any
                id[strcspn(id, "\n")] = '\0';
           }
