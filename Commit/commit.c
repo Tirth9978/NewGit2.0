@@ -122,7 +122,6 @@ void appendMessage(char * message) {
      // Getting Id : 
 
      char * id = getingId();
-     // printf("%s",id);
      if (id == NULL){
           problemInCommit();
           return ;
@@ -134,7 +133,6 @@ void appendMessage(char * message) {
           return ;
      }
 
-     // printf("%d %d" , currCount.files , currCount.folders);
 
      //---------------------------------------------------------------------------
      const char * filePath = ".newgit/idInfo.txt";
@@ -148,10 +146,9 @@ void appendMessage(char * message) {
      }
 
      fprintf(file ,"Commit Message : %s\n" ,message );
-     printf("%s",message);
-     printf("I am Writing \n");
      fclose(file);
 
      
+
      return ;
 }

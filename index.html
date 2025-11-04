@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewGit2.0 - Version Control Reimagined (Beta)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A0F2D;
+            --secondary: #00D4FF;
+            --accent: #7B42F6;
+            --background: #0C1120;
+            --text: #E2E8F0;
+            --button-gradient: linear-gradient(135deg, #7B42F6, #00D4FF);
+            --beta-color: #FFA500;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Beta Banner */
+        .beta-banner {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #FFA500, #FF6B35);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .beta-banner .beta-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 40px;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(12, 17, 32, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 2rem;
+            background: rgba(12, 17, 32, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "⚡";
+            font-size: 1.8rem;
+            -webkit-text-fill-color: var(--secondary);
+        }
+
+        .beta-badge {
+            position: absolute;
+            top: -10px;
+            right: -40px;
+            background: var(--beta-color);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--button-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .typing-container {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            min-height: 1.2em;
+            position: relative;
+        }
+
+        .typing-text {
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-right: 3px solid var(--secondary);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                border-color: var(--secondary);
+            }
+            51%, 100% {
+                border-color: transparent;
+            }
+        }
+
+        .hero-beta-badge {
+            display: inline-block;
+            background: var(--beta-color);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        .beta-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid var(--beta-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 2.2s;
+        }
+
+        .beta-warning p {
+            color: var(--beta-color);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--button-gradient);
+            color: white;
+            box-shadow: 0 5px 15px rgba(123, 66, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(123, 66, 246, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .terminal-container {
+            background: #1a1f2e;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-content {
+            font-family: 'JetBrains Mono', monospace;
+            color: #0f0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .command-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+
+        .command {
+            color: #fff;
+        }
+
+        .command-output {
+            color: #a0aec0;
+            margin-left: 1rem;
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(26, 31, 46, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            border: 1px solid rgba(123, 66, 246, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--button-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(123, 66, 246, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #a0aec0;
+        }
+
+        .beta-feature {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--beta-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Download Section */
+        .download {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(123, 66, 246, 0.1), rgba(0, 212, 255, 0.1));
+        }
+
+        .download-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .download-beta-notice {
+            background: rgba(255, 165, 0, 0.15);
+            border: 2px solid var(--beta-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .download-beta-notice h3 {
+            color: var(--beta-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .download-beta-notice p {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .download-beta-notice ul {
+            text-align: left;
+            margin-top: 1rem;
+            color: #a0aec0;
+        }
+
+        .download-beta-notice li {
+            margin-bottom: 0.3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--button-gradient);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+            border: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(123, 66, 246, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(123, 66, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(123, 66, 246, 0);
+            }
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .download-progress {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--button-gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Technical Section */
+        .technical {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .code-container {
+            background: #1a1f2e;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .code-language {
+            color: var(--secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #6a35d6;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: #27c93f;
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #f1fa8c; }
+        .code-comment { color: #6272a4; }
+        .code-function { color: #50fa7b; }
+        .code-number { color: #bd93f9; }
+
+        .architecture-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3rem 0;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .arch-node {
+            position: absolute;
+            background: rgba(123, 66, 246, 0.2);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1rem;
+            width: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .arch-node:hover {
+            background: rgba(123, 66, 246, 0.4);
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .arch-line {
+            position: absolute;
+            height: 2px;
+            background: var(--secondary);
+            transform-origin: left center;
+            animation: drawLine 2s ease forwards;
+        }
+
+        @keyframes drawLine {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: #0a0f2d;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(123, 66, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--button-gradient);
+            transform: translateY(-5px) rotate(360deg);
+        }
+
+        .footer-text {
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+        .beta-footer {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            color: var(--beta-color);
+            font-size: 0.85rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .typing-container {
+                font-size: 2rem;
+            }
+
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .download-stats {
+                gap: 1.5rem;
+            }
+
+            .arch-node {
+                position: relative;
+                margin: 1rem auto;
+            }
+
+            .beta-banner {
+                font-size: 0.8rem;
+            }
+
+            nav {
+                top: 35px;
+            }
+
+            .hero {
+                margin-top: 35px;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-icon {
+            width: 80px;
+            height: 80px;
+            border: 3px solid rgba(123, 66, 246, 0.3);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Beta Banner -->
+    <div class="beta-banner">
+        <span class="beta-icon">⚠️</span>
+        NewGit2.0 is currently in BETA - Under Active Development
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-icon"></div>
+            <p style="color: var(--text);">Initializing NewGit2.0 Beta...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                NewGit2.0
+                <span class="beta-badge">Beta</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                <li><a href="#steesting">Steesting</a></li>
+                <li><a href="#download">Download</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-beta-badge">🚀 Beta Version v2.0.1-beta</div>
+            <div class="typing-container">
+                <span class="typing-text" id="typingText"></span>
+            </div>
+            <div class="beta-warning">
+                <p>⚠️ This is a beta version under active development. Some features may be incomplete or unstable.</p>
+            </div>
+            <p class="hero-subtitle">Experience the future of version control with cutting-edge technology and seamless workflow</p>
+            <div class="cta-buttons">
+                <a href="#download" class="btn btn-primary">Try Beta Now</a>
+                <a href="#features" class="btn btn-secondary">Explore Features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Beta Features</h2>
+        
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+            </div>
+            <div class="terminal-content">
+                <div class="command-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="command1"></span>
+                </div>
+                <div class="command-output" id="output1"></div>
+                <div class="command-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="command2"></span>
+                </div>
+                <div class="command-output" id="output2"></div>
+                <div class="command-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="command3"></span>
+                </div>
+                <div class="command-output" id="output3"></div>
+            </div>
+        </div>
+
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="beta-feature">Beta</span>
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Lightning Fast</h3>
+                <p class="feature-description">Optimized performance with intelligent caching and parallel processing</p>
+            </div>
+            <div class="feature-card">
+                <span class="beta-feature">Beta</span>
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure by Default</h3>
+                <p class="feature-description">End-to-end encryption and advanced security protocols built-in</p>
+            </div>
+            <div class="feature-card">
+                <span class="beta-feature">Beta</span>
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Distributed Architecture</h3>
+                <p class="feature-description">Seamless collaboration across teams and geographic boundaries</p>
+            </div>
+            <div class="feature-card">
+                <span class="beta-feature">Coming Soon</span>
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Advanced Analytics</h3>
+                <p class="feature-description">Deep insights into your codebase with intelligent metrics</p>
+            </div>
+            <div class="feature-card">
+                <span class="beta-feature">Beta</span>
+                <div class="feature-icon">🔄</div>
+                <h3 class="feature-title">Smart Merging</h3>
+                <p class="feature-description">AI-powered conflict resolution and intelligent branch management</p>
+            </div>
+            <div class="feature-card">
+                <span class="beta-feature">In Development</span>
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">Beautiful UI</h3>
+                <p class="feature-description">Intuitive interface designed for maximum productivity</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download" id="download">
+        <div class="download-container">
+            <h2 class="section-title">Download NewGit2.0 Beta</h2>
+            
+            <div class="download-beta-notice">
+                <h3>⚠️ Beta Release Notice</h3>
+                <p>You're about to download a beta version of NewGit2.0. Please note:</p>
+                <ul>
+                    <li>• This is experimental software under active development</li>
+                    <li>• Some features may be incomplete or contain bugs</li>
+                    <li>• Not recommended for production environments</li>
+                    <li>• Back up your repositories before using</li>
+                    <li>• Report issues on our GitHub repository</li>
+                </ul>
+            </div>
+            
+            <div class="download-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="downloadCount">0</div>
+                    <div class="stat-label">Beta Downloads</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="userCount">0</div>
+                    <div class="stat-label">Beta Testers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="repoCount">0</div>
+                    <div class="stat-label">Test Repositories</div>
+                </div>
+            </div>
+            
+            <button class="download-btn" id="downloadBtn">
+                <span>⬇ Download NewGit2.0 Beta (v2.0.1-beta)</span>
+            </button>
+            
+            <div class="download-progress" id="downloadProgress">
+                <p style="margin-bottom: 1rem; color: var(--secondary);">Preparing your beta download...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Section -->
+    <section class="technical" id="technical">
+        <h2 class="section-title">Technical Architecture (Beta)</h2>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span class="code-language">JavaScript (Beta API)</span>
+                <button class="copy-btn" id="copyBtn1">Copy</button>
+            </div>
+            <pre id="codeBlock1"><code><span class="code-comment">// Initialize NewGit Beta repository</span>
+<span class="code-keyword">const</span> <span class="code-function">newgit</span> = <span class="code-keyword">require</span>(<span class="code-string">'newgit2.0-beta'</span>);
+
+<span class="code-comment">// Create a new beta repository</span>
+<span class="code-keyword">const</span> repo = <span class="code-keyword">await</span> <span class="code-function">newgit</span>.<span class="code-function">init</span>({
+  name: <span class="code-string">'my-beta-project'</span>,
+  type: <span class="code-string">'distributed'</span>,
+  encryption: <span class="code-keyword">true</span>,
+  beta: <span class="code-keyword">true</span>  <span class="code-comment">// Enable beta features</span>
+});
+
+<span class="code-comment">// Add files and commit (beta version)</span>
+<span class="code-keyword">await</span> repo.<span class="code-function">add</span>(<span class="code-string">'.'</span>);
+<span class="code-keyword">await</span> repo.<span class="code-function">commit</span>({
+  message: <span class="code-string">'Initial beta commit'</span>,
+  author: <span class="code-string">'Beta Tester'</span>,
+  experimental: <span class="code-keyword">true</span>
+});</code></pre>
+        </div>
+
+        <div class="architecture-diagram">
+            <div class="arch-node" style="top: 0; left: 50%; transform: translateX(-50%);">
+                <strong>Beta Client</strong>
+                <p style="font-size: 0.8rem; color: #a0aec0;">Testing Interface</p>
+            </div>
+            <div class="arch-node" style="top: 120px; left: 20%;">
+                <strong>Beta Cache</strong>
+                <p style="font-size: 0.8rem; color: #a0aec0;">Experimental Layer</p>
+            </div>
+            <div class="arch-node" style="top: 120px; right: 20%;">
+                <strong>Security</strong>
+                <p style="font-size: 0.8rem; color: #a0aec0;">Beta Encryption</p>
+            </div>
+            <div class="arch-node" style="bottom: 0; left: 50%; transform: translateX(-50%);">
+                <strong>Test Network</strong>
+                <p style="font-size: 0.8rem; color: #a0aec0;">Beta Infrastructure</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-link">📧</a>
+            <a href="#" class="social-link">💬</a>
+            <a href="#" class="social-link">🐦</a>
+            <a href="#" class="social-link">📱</a>
+        </div>
+        <p class="footer-text">© 2024 NewGit2.0 Beta. All rights reserved. | Version Control Reimagined</p>
+        <div class="beta-footer">
+            <strong>Beta Version Notice:</strong> This software is in beta and under active development. 
+            Use at your own risk. Please report bugs and provide feedback to help us improve.
+        </div>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Typing animation
+        const typingText = document.getElementById('typingText');
+        const text = "NewGit - Version Control Reimagined (Beta)";
+        let index = 0;
+
+        function typeText() {
+            if (index < text.length) {
+                typingText.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeText, 100);
+            }
+        }
+
+        setTimeout(typeText, 1600);
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Terminal commands animation
+        const commands = [
+            { id: 'command1', text: 'newgit init --beta', output: 'Initialized empty NewGit BETA repository in /project/' },
+            { id: 'command2', text: 'newgit add .', output: 'Added 42 files to staging area (beta mode)' },
+            { id: 'command3', text: 'newgit commit -m "Initial beta commit"', output: 'Created commit a1b2c3d: Initial beta commit' }
+        ];
+
+        let commandIndex = 0;
+        function typeCommand() {
+            if (commandIndex < commands.length) {
+                const cmd = commands[commandIndex];
+                const element = document.getElementById(cmd.id);
+                const outputElement = document.getElementById('output' + (commandIndex + 1));
+                let charIndex = 0;
+
+                function typeChar() {
+                    if (charIndex < cmd.text.length) {
+                        element.textContent += cmd.text.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 50);
+                    } else {
+                        setTimeout(() => {
+                            document.getElementById('output' + (commandIndex + 1)).textContent = cmd.output;
+                            commandIndex++;
+                            setTimeout(typeCommand, 500);
+                        }, 500);
+                    }
+                }
+
+                typeChar();
+            }
+        }
+
+        setTimeout(typeCommand, 3000);
+
+        // Stats counter animation
+        function animateCounter(elementId, target, duration) {
+            const element = document.getElementById(elementId);
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            function updateCounter() {
+                current += increment;
+                if (current < target) {
+                    element.textContent = Math.floor(current).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            }
+
+            updateCounter();
+        }
+
+        // Intersection Observer for stats
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter('downloadCount', 12500, 2000);
+                    animateCounter('userCount', 3500, 2000);
+                    animateCounter('repoCount', 8900, 2000);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const downloadSection = document.getElementById('download');
+        statsObserver.observe(downloadSection);
+
+        // Copy code functionality
+        document.getElementById('copyBtn1').addEventListener('click', function() {
+            const codeText = document.getElementById('codeBlock1').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                this.textContent = 'Copied!';
+                this.classList.add('copied');
+                setTimeout(() => {
+                    this.textContent = 'Copy';
+                    this.classList.remove('copied');
+                }, 2000);
+            });
+        });
+
+        // Create and download ZIP file
+        document.getElementById('downloadBtn').addEventListener('click', async function() {
+            const btn = this;
+            const progressDiv = document.getElementById('downloadProgress');
+            const progressFill = document.getElementById('progressFill');
+            
+            // Show progress
+            progressDiv.style.display = 'block';
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ Preparing Beta...</span>';
+            
+            // Animate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 90) {
+                    clearInterval(progressInterval);
+                }
+            }, 100);
+            
+            // Create ZIP file
+            const zip = new JSZip();
+            
+            // Add main executable
+            zip.file("newgit-beta.exe", "MZ\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00\xff\xff\x00\x00\xb8\x00\x00\x00\x00\x00\x00\x00", {binary: true});
+            zip.file("newgit-beta", "#!/bin/bash\n# NewGit2.0 Beta Linux Binary\necho 'NewGit2.0 v2.0.1-beta - Version Control Reimagined'\necho 'WARNING: This is a beta version'\nexec '$0.bin' \"$@\"", {binary: false});
+            
+            // Add documentation
+            zip.file("README.md", `# NewGit2.0 Beta - Version Control Reimagined
+
+## ⚠️ BETA VERSION NOTICE
+
+This is a BETA version of NewGit2.0 under active development.
+
+### IMPORTANT WARNINGS:
+- NOT recommended for production use
+- May contain bugs and incomplete features
+- Always backup your repositories before using
+- Report issues at: https://github.com/newgit/issues
+
+## Installation
+
+### Windows
+1. Download NewGit2.0-beta.zip
+2. Extract to C:\\Program Files\\NewGit2.0-Beta
+3. Add to PATH: C:\\Program Files\\NewGit2.0-Beta
+
+### Linux/Mac
+1. Download NewGit2.0-beta.zip
+2. Extract to /usr/local/bin
+3. chmod +x newgit-beta
+
+## Quick Start (Beta)
+
+\`\`\`bash
+# Initialize a new beta repository
+newgit-beta init --beta
+
+# Add files
+newgit-beta add .
+
+# Commit changes
+newgit-beta commit -m "Initial beta commit"
+
+# Push to remote (beta servers)
+newgit-beta push origin main
+\`\`\`
+
+## Beta Features
+- Lightning fast performance (experimental)
+- Distributed architecture (testing phase)
+- Advanced security (beta encryption)
+- Smart merging (AI-powered, experimental)
+- Advanced analytics (coming soon)
+- Beautiful UI (in development)
+
+## Known Issues
+- Some merge conflicts may not resolve automatically
+- Large repositories (>1GB) may experience slowdowns
+- Windows integration is still being improved
+- Some commands may not work as expected
+
+## Feedback
+Please provide feedback at:
+- Email: beta@newgit.com
+- Discord: https://discord.gg/newgit-beta
+- GitHub: https://github.com/newgit/issues
+
+## Version Information
+Version: 2.0.1-beta
+Build Date: ${new Date().toISOString().split('T')[0]}
+Beta Phase: Public Testing
+
+© 2024 NewGit2.0. All rights reserved.
+`);
+
+            // Add license
+            zip.file("LICENSE", `MIT License
+
+Copyright (c) 2024 NewGit2.0
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+BETA NOTICE: This software is provided for testing purposes only.`);
+
+            // Add configuration files
+            zip.file("config/beta.json", JSON.stringify({
+                "version": "2.0.1-beta",
+                "beta": true,
+                "defaultBranch": "main",
+                "autoPush": false,
+                "encryption": true,
+                "cacheSize": "1GB",
+                "maxFileSize": "100MB",
+                "mergeStrategy": "auto",
+                "remoteTimeout": 30,
+                "compression": "gzip",
+                "experimentalFeatures": {
+                    "aiMerge": true,
+                    "quantumSync": false,
+                    "neuralCache": true
+                },
+                "betaServers": [
+                    "beta1.newgit.com",
+                    "beta2.newgit.com"
+                ]
+            }, null, 2));
+
+            // Add sample project
+            const sampleFolder = zip.folder("examples/beta-project");
+            sampleFolder.file("README.md", "# Beta Sample Project\nThis is a sample project to test NewGit2.0 beta features.\n\n⚠️ For testing purposes only - not for production use.");
+            sampleFolder.file("package.json", JSON.stringify({
+                "name": "newgit-beta-sample",
+                "version": "0.1.0-beta",
+                "description": "Sample project for NewGit2.0 Beta",
+                "scripts": {
+                    "start": "node index.js",
+                    "test": "newgit-beta test",
+                    "beta-check": "newgit-beta status --beta"
+                }
+            }, null, 2));
+            sampleFolder.file("index.js", "// Sample JavaScript file for beta testing\nconsole.log('Hello from NewGit2.0 Beta!');\nconsole.log('Version: 2.0.1-beta');\n\nfunction main() {\n    // Your beta testing code here\n    return 'Beta Success';\n}\n\nmain();");
+            sampleFolder.file(".gitignore", "node_modules/\n.env\n*.log\ndist/\nbuild/\n\n# Beta specific\nbeta-logs/\nexperimental/\n");
+
+            // Add installation scripts
+            zip.file("install-beta.sh", `#!/bin/bash
+# NewGit2.0 Beta Installation Script for Linux/Mac
+
+echo "Installing NewGit2.0 BETA..."
+echo "⚠️ This is a beta version - not for production use"
+
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root (use sudo)"
+    exit 1
+fi
+
+# Create installation directory
+mkdir -p /usr/local/bin/newgit2.0-beta
+
+# Copy files
+cp -r * /usr/local/bin/newgit2.0-beta/
+
+# Create symlink
+ln -sf /usr/local/bin/newgit2.0-beta/newgit-beta /usr/local/bin/newgit-beta
+
+# Set permissions
+chmod +x /usr/local/bin/newgit-beta
+chmod +x /usr/local/bin/newgit2.0-beta/newgit-beta
+
+echo "Beta installation complete!"
+echo "Run 'newgit-beta --version' to verify installation."
+echo "Report issues at: https://github.com/newgit/issues"
+`);
+
+            zip.file("install-beta.bat", `@echo off
+REM NewGit2.0 Beta Installation Script for Windows
+
+echo Installing NewGit2.0 BETA...
+echo ⚠️ This is a beta version - not for production use
+
+REM Create installation directory
+if not exist "C:\\Program Files\\NewGit2.0-Beta" mkdir "C:\\Program Files\\NewGit2.0-Beta"
+
+REM Copy files
+xcopy /E /Y * "C:\\Program Files\\NewGit2.0-Beta\\"
+
+REM Add to PATH
+setx PATH "%PATH%;C:\\Program Files\\NewGit2.0-Beta" /M
+
+echo Beta installation complete!
+echo Run 'newgit-beta --version' to verify installation.
+echo Report issues at: https://github.com/newgit/issues
+pause`);
+
+            // Add beta documentation folder
+            const docsFolder = zip.folder("docs/beta");
+            docsFolder.file("BETA_API.md", `# NewGit2.0 Beta API Documentation
+
+## ⚠️ BETA API - Subject to Change
+
+### Commands (Beta)
+
+#### newgit-beta init
+Initialize a new beta repository.
+
+\`\`\`bash
+newgit-beta init --beta [options]
+\`\`\`
+
+Options:
+- --bare: Create a bare repository
+- --template: Specify template directory
+- --experimental: Enable experimental features
+
+#### newgit-beta add
+Add files to the staging area.
+
+\`\`\`bash
+newgit-beta add <file>...
+newgit-beta add .
+\`\`\`
+
+#### newgit-beta commit
+Create a new commit (beta version).
+
+\`\`\`bash
+newgit-beta commit -m "message"
+newgit-beta commit --amend
+newgit-beta commit --beta-force
+\`\`\`
+
+### Experimental Features
+
+#### AI-Powered Merging
+\`\`\`bash
+newgit-beta merge --ai
+\`\`\`
+
+#### Quantum Sync (Experimental)
+\`\`\`bash
+newgit-beta sync --quantum
+\`\`\`
+
+### Beta Configuration
+
+#### Global Configuration
+\`\`\`bash
+newgit-beta config --global user.name "Your Name"
+newgit-beta config --global user.email "email@example.com"
+newgit-beta config --global beta.enabled true
+\`\`\`
+
+#### Repository Configuration
+\`\`\`bash
+newgit-beta config user.name "Your Name"
+newgit-beta config user.email "email@example.com"
+newgit-beta config experimental.features true
+\`\`\`
+
+## Known Limitations
+- AI merging may not work in all scenarios
+- Quantum sync is highly experimental
+- Some commands may change in future releases
+`);
+
+            // Add changelog
+            zip.file("CHANGELOG.md", `# NewGit2.0 Beta Changelog
+
+## Version 2.0.1-beta (Current)
+### Added
+- Initial beta release
+- Basic version control functionality
+- Experimental AI merging
+- Beta encryption module
+- Distributed architecture testing
+
+### Known Issues
+- Large repository support is limited
+- Some merge conflicts may not resolve
+- Windows integration needs improvement
+- Performance issues with >1GB repositories
+
+### Coming Soon
+- Advanced analytics dashboard
+- Improved conflict resolution
+- Better Windows integration
+- Performance optimizations
+
+## Version 2.0.0-beta
+- Initial development version
+- Core architecture implemented
+`);
+
+            // Generate the ZIP file
+            try {
+                const content = await zip.generateAsync({type: "blob"});
+                
+                // Complete progress
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                
+                setTimeout(() => {
+                    // Save the file
+                    saveAs(content, "NewGit2.0-beta-v2.0.1.zip");
+                    
+                    // Reset UI
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>✓ Beta Download Complete!</span>';
+                    progressDiv.style.display = 'none';
+                    progressFill.style.width = '0%';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = '<span>⬇ Download NewGit2.0 Beta (v2.0.1-beta)</span>';
+                    }, 3000);
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error creating ZIP file:', error);
+                btn.disabled = false;
+                btn.innerHTML = '<span>❌ Beta Download Failed</span>';
+                progressDiv.style.display = 'none';
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add floating animation to feature cards on scroll
+        const featureObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            featureObserver.observe(card);
+        });
+    </script>
+</body>
+</html>
