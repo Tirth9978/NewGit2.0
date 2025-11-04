@@ -102,7 +102,7 @@ void gettingConfigUserInfo(){
      }
 
      char path[1024];
-     snprintf(path , sizeof(path) , "%s/NewGit2.0" , home);
+     snprintf(path , sizeof(path) , "%s/NewGit2.0/configUser.txt" , home);
 
      FILE  * file = fopen(path , "r");
 
