@@ -134,22 +134,22 @@ void appendMessage(char * message) {
           return ;
      }
 
-     printf("%d %d" , currCount.files , currCount.folders);
+     // printf("%d %d" , currCount.files , currCount.folders);
 
-     // //---------------------------------------------------------------------------
-     // const char * filePath = ".newgit/idInfo.txt";
+     //---------------------------------------------------------------------------
+     const char * filePath = ".newgit/idInfo.txt";
 
-     // FILE * file = fopen(filePath , "a");
-     // printf(GRN "User information ....\n" END);
-     // gettingConfigUserInfo();
-     // if (file == NULL) {
-     //      problemInCommit();
-     //      return ;
-     // }
+     FILE * file = fopen(filePath , "a");
+     printf(GRN "User information ....\n" END);
+     gettingConfigUserInfo();
+     if (file == NULL) {
+          problemInCommit();
+          return ;
+     }
 
-     // fprintf("Commit Message : %s\n" ,message );
+     fprintf("Commit Message : %s\n" ,message );
 
-     // fclose(file);
+     fclose(file);
 
      
      return ;
