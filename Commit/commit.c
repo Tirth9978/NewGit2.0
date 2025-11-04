@@ -110,7 +110,7 @@ void gettingConfigUserInfo(){
           problemInCommit();
           return ;
      }
-     
+     printf("I am in the USer\n");
      while (fgets(buff , sizeof(buff) , file) != NULL) {
           printf( YEL "%s" END , buff );
      }
@@ -122,7 +122,7 @@ void appendMessage(char * message) {
      // Getting Id : 
 
      char * id = getingId();
-     printf("%s",id);
+     // printf("%s",id);
      if (id == NULL){
           problemInCommit();
           return ;
