@@ -147,7 +147,8 @@ void appendMessage(char * message) {
           return ;
      }
 
-     fprintf("Commit Message : %s\n" ,message );
+     fprintf(file ,"Commit Message : %s\n" ,message );
+     printf("%s",message);
      printf("I am Writing \n");
      fclose(file);
 
