@@ -168,7 +168,7 @@ void appendMessage(char * message) {
      // Counting the Numbers-----------------------------------
      struct FileCount currCount =countCurrentDir(); 
      struct FileCount stagCount = countInStagDIR(id);
-     printf("%d %d" , stagCount.files , stagCount.folders);
+     printf("Stag : %d %d\n" , stagCount.files , stagCount.folders);
      if (currCount.files == -1 && currCount.folders == -1) {
           problemInCommit();
           return ;
