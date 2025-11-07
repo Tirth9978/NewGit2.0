@@ -63,47 +63,42 @@ struct FileCount countCurrentDir() {
      closedir(dir);
      return count;
 }
+struct FileCount countFilesInPath(const char *basePath) {
+    struct FileCount count = {0, 0};
+    struct dirent *dp;
+    struct stat st;
 
-struct FileCount countInStagDIR(char * id){
-     printf("%s\n" , id);
-     struct FileCount count= {-1,-1};
-     char path[200];
-     snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
-     struct dirent *dp;
-     struct stat st;
-     DIR *dir = opendir(path);
+    DIR *dir = opendir(basePath);
+    if (!dir)
+        return count;
 
+    while ((dp = readdir(dir)) != NULL) {
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+            continue;
 
-     if (!dir)
-        return count; 
-     
-     count.files = 0 ;
-     count.folders = 0;
+        char fullPath[1024];
+        snprintf(fullPath, sizeof(fullPath), "%s/%s", basePath, dp->d_name);
 
+        if (stat(fullPath, &st) == 0) {
+            if (S_ISDIR(st.st_mode)) {
+                count.folders++;
+                struct FileCount subCount = countFilesInPath(fullPath);
+                count.files += subCount.files;
+                count.folders += subCount.folders;
+            } else if (S_ISREG(st.st_mode)) {
+                count.files++;
+            }
+        }
+    }
 
-     while ((dp = readdir(dir)) != NULL) {
-          // Ignore . and ..
-          if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
-               continue;
-
-          char path[1024];
-          snprintf(path, sizeof(path), "%s/%s", path, dp->d_name);
-
-          if (stat(path, &st) == 0) {
-               if (S_ISDIR(st.st_mode)) {
-                    count.folders++;
-                    struct FileCount subCount = countInStagDIR(path);
-                    count.files += subCount.files;
-                    count.folders += subCount.folders;
-               } else if (S_ISREG(st.st_mode)) {
-                    count.files++;
-               }
-          }
-     }
-     closedir(dir);
-     return count ;
+    closedir(dir);
+    return count;
 }
-
+struct FileCount countInStagDIR(char * id ) {
+     char path[256];
+     snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
+     return countFilesInPath(path);
+}
 
 char *getingId() {
      const char *path = ".newgit/idInfo.txt";
