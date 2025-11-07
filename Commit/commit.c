@@ -65,6 +65,7 @@ struct FileCount countCurrentDir() {
 }
 
 struct FileCount countInStagDIR(char * id){
+     printf("%s\n" , id);
      struct FileCount count= {-1,-1};
      char path[200];
      snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
