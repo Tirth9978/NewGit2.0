@@ -180,52 +180,74 @@ void appendMessage(char * message) {
           NotStaged();
           return ;
      }
-     printf("%s" , id);
      // Counting the Numbers-----------------------------------
-     // struct FileCount currCount =countCurrentDir(); 
-     // struct FileCount stagCount = countInStagDIR(id);
-     // if (currCount.files == -1 && currCount.folders == -1) {
-     //      problemInCommit();
-     //      return ;
-     // }
-     // if (stagCount.files == -1 && stagCount.folders == -1) {
-     //      problemInCommit();
-     //      return ;
-     // }
+     struct FileCount currCount =countCurrentDir(); 
+     struct FileCount stagCount = countInStagDIR(id);
+     if (currCount.files == -1 && currCount.folders == -1) {
+          problemInCommit();
+          return ;
+     }
+     if (stagCount.files == -1 && stagCount.folders == -1) {
+          problemInCommit();
+          return ;
+     }
 
 
      //---------------------------------------------------------------------------
-     // const char * filePath = ".newgit/idInfo.txt";
+     const char * filePath = ".newgit/idInfo.txt";
 
-     // FILE * file = fopen(filePath , "a");
-     // printf(GRN "User information ....\n" END);
-     // gettingConfigUserInfo();
-     // if (file == NULL) {
-     //      problemInCommit();
-     //      return ;
-     // }
+     FILE * file = fopen(filePath , "a");
+     printf(GRN "User information ....\n" END);
+     gettingConfigUserInfo();
+     if (file == NULL) {
+          problemInCommit();
+          return ;
+     }
 
-     // fprintf(file ,"Commit Message : %s\n" ,message );
-     // fclose(file);
+     fprintf(file ,"Commit Message : %s\n" ,message );
+     fclose(file);
 
      //-----------------Normal compare ------------------------
-
-     // if (currCount.files < stagCount.files) {
-     //      int totalCount = stagCount.files - currCount.files;
-     //      printf("Files Contents : (Total count : %d)" , totalCount);
-     //      for (int i =0;i<totalCount;i++){
-     //           printf( RED "-" END );
-     //      }
-     //      printf("\n");
-     // }
-     // if (currCount.folders < stagCount.folders) {
-     //      int totalCount = stagCount.folders - currCount.folders ; 
-     //      printf("Folders Contents : (Total count : %d)" , totalCount);
-     //      for (int i =0;i<totalCount;i++){
-     //           printf( RED "-" END );
-     //      }
-     //      printf("\n");
-     // }
+     int isChnaged = 0;
+     if (currCount.files < stagCount.files) {
+          int totalCount = stagCount.files - currCount.files;
+          printf("Files Contents : (Total count : %d)" , totalCount);
+          for (int i =0;i<totalCount;i++){
+               printf( RED "-" END );
+          }
+          printf("\n");
+          isChnaged = 1;
+     }
+     if (currCount.folders < stagCount.folders) {
+          int totalCount = stagCount.folders - currCount.folders ; 
+          printf("Folders Contents : (Total count : %d)" , totalCount);
+          for (int i =0;i<totalCount;i++){
+               printf( RED "-" END );
+          }
+          printf("\n");
+          isChnaged = 1;
+     }
+     if (currCount.files > stagCount.files) {
+          int totalCount = -(stagCount.files - currCount.files);
+          printf("Files Contents : (Total count : %d)" , totalCount);
+          for (int i =0;i<totalCount;i++){
+               printf( GRN "+" END );
+          }
+          printf("\n");
+          isChnaged = 1;
+     }
+     if (currCount.folders > stagCount.folders){
+          int totalCount = -(stagCount.folders - currCount.folders);
+          printf("Folder Contents : (Total count : %d)" , totalCount);
+          for (int i =0;i<totalCount;i++){
+               printf( GRN "+" END );
+          }
+          printf("\n");
+          isChnaged = 1;
+     }
+     if (!isChnaged) {
+          printf("Noting Changed :) \n ");
+     }
      
      return ;
 }
