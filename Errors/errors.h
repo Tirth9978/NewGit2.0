@@ -25,4 +25,8 @@ void Forgot_M();
 void ForGotMessage() ;
 void problemInCommit();
 void NotStaged();
+
+// Revert 
+void idNotExist() ;
+void problemInRevert();
 #endif

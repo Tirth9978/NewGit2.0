@@ -100,3 +100,14 @@ void NotStaged() {
      printf(RED "Not Staged yet \n" END);
      return ;
 }
+
+//----------------------------------- Revert --------------------------------------
+void idNotExist(){
+     printf( RED "Id not exitst :(\n" END );
+     return ;
+}
+
+void problemInRevert (){
+     printf(RED "There is the system problem to revert :(\n" END);
+     return ;
+}
