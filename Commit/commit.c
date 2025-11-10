@@ -106,12 +106,13 @@ char *getingId() {
      char line[200];
      char ids[100][100];  // store all IDs
      int count = 0;
+     static char result[100]; // static so it's safe to return
 
-     fp = fopen(".newgit/idInfo.txt", "r");  // your file name
+     fp = fopen(path, "r");  // open the file
      if (fp == NULL) {
-          printf("Iadded \n");
-          problemInCommit();
-          return 1;
+          printf("Error opening file!\n");
+          // You can call problemInCommit() here if needed
+          return "ERROR";
      }
 
      while (fgets(line, sizeof(line), fp)) {
@@ -128,16 +129,15 @@ char *getingId() {
      fclose(fp);
 
      if (count == 0) {
-          return "NULL";
+          strcpy(result, "NULL");
+     } else if (count == 1) {
+          strcpy(result, ids[0]);   // only one ID → return that
+     } else {
+          strcpy(result, ids[count - 2]); // return second last ID
      }
-     else if (count == 1) {
-          return ids[count];
-     }
-     else {
-          return ids[count - 2];
-     }
-}
 
+     return result;  // safe because it's static
+}
 
 void gettingConfigUserInfo(){
      char * userName ;
