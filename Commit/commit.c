@@ -103,12 +103,13 @@ struct FileCount countInStagDIR(char * id ) {
 char *getingId() {
      const char *path = ".newgit/idInfo.txt";
      FILE *fp;
-    char line[200];
-    char ids[100][100];  // store all IDs
-    int count = 0;
+     char line[200];
+     char ids[100][100];  // store all IDs
+     int count = 0;
 
-    fp = fopen(".newgit/idInfo.txt", "r");  // your file name
+     fp = fopen(".newgit/idInfo.txt", "r");  // your file name
      if (fp == NULL) {
+          printf("Iadded \n");
           problemInCommit();
           return 1;
      }
@@ -125,6 +126,7 @@ char *getingId() {
      }
 
      fclose(fp);
+
      if (count == 0) {
           return "NULL";
      }
