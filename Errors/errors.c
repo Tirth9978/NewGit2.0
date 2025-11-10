@@ -89,8 +89,14 @@ void Forgot_M() {
      return ;
 }
 
+
+//---------------------------------- Commit ------------------------------------
 void problemInCommit(){
      printf(RED "Problem in commiting the message :(\n" END);
      printf(RED "Please Try again leter ...\n" END);
+     return ;
+}
+void NotStaged() {
+     printf(RED "Not Staged yet \n" END);
      return ;
 }

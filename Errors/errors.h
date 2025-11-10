@@ -24,4 +24,5 @@ void faultStaging();
 void Forgot_M();
 void ForGotMessage() ;
 void problemInCommit();
+void NotStaged();
 #endif

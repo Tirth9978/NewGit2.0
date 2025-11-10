@@ -102,25 +102,38 @@ struct FileCount countInStagDIR(char * id ) {
 
 char *getingId() {
      const char *path = ".newgit/idInfo.txt";
-     FILE *file = fopen(path, "r");   // open for reading
-     if (file == NULL) {
-          return "NULL";
+     FILE *fp;
+    char line[200];
+    char ids[100][100];  // store all IDs
+    int count = 0;
+
+    fp = fopen(".newgit/idInfo.txt", "r");  // your file name
+     if (fp == NULL) {
+          problemInCommit();
+          return 1;
      }
 
-     static char id[256];
-     char buffer[256];
-
-     while (fgets(buffer, sizeof(buffer), file) != NULL) {
-          // Look for line starting with "Id:"
-          if (strncmp(buffer, "Id:", 3) == 0) {
-               strcpy(id, buffer + 3);   // copy text after "Id:"
-               // remove newline if any
-               id[strcspn(id, "\n")] = '\0';
+     while (fgets(line, sizeof(line), fp)) {
+          // check if line starts with "id :"
+          if (strncmp(line, "id :", 4) == 0) {
+               char temp[100];
+               // extract the id value after "id :"
+               if (sscanf(line, "id : %s", temp) == 1 && strlen(temp) > 0) {
+                    strcpy(ids[count++], temp);
+               }
           }
      }
 
-     fclose(file);
-     return id;
+     fclose(fp);
+     if (count == 0) {
+          return "NULL";
+     }
+     else if (count == 1) {
+          return ids[count - 1];
+     }
+     else {
+          return ids[count - 2];
+     }
 }
 
 
@@ -145,7 +158,7 @@ void gettingConfigUserInfo(){
           problemInCommit();
           return ;
      }
-     printf("I am in the USer\n");
+
      while (fgets(buff , sizeof(buff) , file) != NULL) {
           printf( YEL "%s" END , buff );
      }
@@ -161,31 +174,56 @@ void appendMessage(char * message) {
           problemInCommit();
           return ;
      }
-     // Counting the Numbers-----------------------------------
-     struct FileCount currCount =countCurrentDir(); 
-     struct FileCount stagCount = countInStagDIR(id);
-     printf("Stag : %d %d\n" , stagCount.files , stagCount.folders);
-     if (currCount.files == -1 && currCount.folders == -1) {
-          problemInCommit();
+     else if (strcmp(id , "NULL") == 0) {
+          NotStaged();
           return ;
      }
+     printf("%s" , id);
+     // Counting the Numbers-----------------------------------
+     // struct FileCount currCount =countCurrentDir(); 
+     // struct FileCount stagCount = countInStagDIR(id);
+     // if (currCount.files == -1 && currCount.folders == -1) {
+     //      problemInCommit();
+     //      return ;
+     // }
+     // if (stagCount.files == -1 && stagCount.folders == -1) {
+     //      problemInCommit();
+     //      return ;
+     // }
 
 
      //---------------------------------------------------------------------------
-     const char * filePath = ".newgit/idInfo.txt";
+     // const char * filePath = ".newgit/idInfo.txt";
 
-     FILE * file = fopen(filePath , "a");
-     printf(GRN "User information ....\n" END);
-     gettingConfigUserInfo();
-     if (file == NULL) {
-          problemInCommit();
-          return ;
-     }
+     // FILE * file = fopen(filePath , "a");
+     // printf(GRN "User information ....\n" END);
+     // gettingConfigUserInfo();
+     // if (file == NULL) {
+     //      problemInCommit();
+     //      return ;
+     // }
 
-     fprintf(file ,"Commit Message : %s\n" ,message );
-     fclose(file);
+     // fprintf(file ,"Commit Message : %s\n" ,message );
+     // fclose(file);
 
+     //-----------------Normal compare ------------------------
+
+     // if (currCount.files < stagCount.files) {
+     //      int totalCount = stagCount.files - currCount.files;
+     //      printf("Files Contents : (Total count : %d)" , totalCount);
+     //      for (int i =0;i<totalCount;i++){
+     //           printf( RED "-" END );
+     //      }
+     //      printf("\n");
+     // }
+     // if (currCount.folders < stagCount.folders) {
+     //      int totalCount = stagCount.folders - currCount.folders ; 
+     //      printf("Folders Contents : (Total count : %d)" , totalCount);
+     //      for (int i =0;i<totalCount;i++){
+     //           printf( RED "-" END );
+     //      }
+     //      printf("\n");
+     // }
      
-
      return ;
 }

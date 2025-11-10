@@ -163,6 +163,6 @@ void addingStaging() {
      fprintf(file, "Id:%s\n", id);
      fprintf(file, "Day/Time: %s\n", getDateTime());
      fclose(file);
-
+     
      movingFilesToStaheFolder(".newgit/StagingInfo/", id);
 }
