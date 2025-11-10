@@ -114,11 +114,11 @@ char *getingId() {
      }
 
      while (fgets(line, sizeof(line), fp)) {
-          // check if line starts with "id :"
-          if (strncmp(line, "id :", 4) == 0) {
+          // check if line starts with "Id:"
+          if (strncmp(line, "Id:", 3) == 0) {
                char temp[100];
-               // extract the id value after "id :"
-               if (sscanf(line, "id : %s", temp) == 1 && strlen(temp) > 0) {
+               // extract the id value after "Id:"
+               if (sscanf(line, "Id:%s", temp) == 1 && strlen(temp) > 0) {
                     strcpy(ids[count++], temp);
                }
           }
