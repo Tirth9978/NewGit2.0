@@ -131,7 +131,7 @@ char *getingId() {
           return "NULL";
      }
      else if (count == 1) {
-          return ids[count - 1];
+          return ids[count];
      }
      else {
           return ids[count - 2];
