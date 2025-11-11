@@ -131,6 +131,6 @@ void revertById(char * id) {
           idNotExist();
           return ;
      }
-
+     printf("In revert : %s\n",id);
      newgit_revert(id);
 }

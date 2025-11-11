@@ -101,6 +101,7 @@ int main(int argc , char * argv[]){
                }
                else {
                     char * id = child_argv[1];
+                    printf("In main : %s\n",id);
                     revertById(id);
                }
           }
