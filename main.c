@@ -6,6 +6,7 @@
 #include "Errors/errors.h"
 #include "Staging/staging.h"
 #include "Revert/revert.h"
+#include "CommitInfo/info.h"
  
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
@@ -104,6 +105,9 @@ int main(int argc , char * argv[]){
                     printf("In main : %s\n",id);
                     revertById(id);
                }
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0],"--commitinfo") == 0) {
+               gettingInfo();
           }
           else {
                invalidCommand();

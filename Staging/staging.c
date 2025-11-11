@@ -155,14 +155,14 @@ void addingStaging() {
 
 
      FILE *file = fopen(filePath, "a");
-     if (file == NULL) {
-          faultStaging();
-          return;
-     }
+    if (file == NULL) {
+        faultStaging();
+        return;
+    }
 
-     fprintf(file, "Id:%s\n", id);
-     fprintf(file, "Day/Time: %s\n", getDateTime());
-     fclose(file);
-     
-     movingFilesToStaheFolder(".newgit/StagingInfo/", id);
+    fprintf(file, "Id:%s\n", id);
+    fprintf(file, "Day/Time: %s\n", getDateTime());
+    fclose(file);
+    
+    movingFilesToStaheFolder(".newgit/StagingInfo/", id);
 }
