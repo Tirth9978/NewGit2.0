@@ -100,7 +100,8 @@ int main(int argc , char * argv[]){
                     idNotFound();
                }
                else {
-                    revertById();
+                    char * id = child_argv[1];
+                    revertById(id);
                }
           }
           else {
