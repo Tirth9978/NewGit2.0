@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include "commit.h"
+#include "revert.h"
 #include "../Errors/errors.h"
 
 #define RED "\x1B[31m"
