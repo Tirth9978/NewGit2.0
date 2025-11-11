@@ -5,7 +5,8 @@
 #include "Config/MakeConfig.h"
 #include "Errors/errors.h"
 #include "Staging/staging.h"
-
+#include "Revert/revert.h"
+ 
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
 #define YEL "\x1B[33m"
@@ -92,6 +93,14 @@ int main(int argc , char * argv[]){
                }
                else {
                     Forgot_M();
+               }
+          }
+          else if (arg_count >= 1 && strcmp(child_argv[0],"revert") == 0) {
+               if (child_argv[1] == NULL) {
+                    idNotFound();
+               }
+               else {
+                    revertById();
                }
           }
           else {

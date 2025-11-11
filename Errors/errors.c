@@ -111,3 +111,8 @@ void problemInRevert (){
      printf(RED "There is the system problem to revert :(\n" END);
      return ;
 }
+
+void idNotFound (){
+     printf(RED "Please enter the id to revert ...\n" END);
+     return ;
+}

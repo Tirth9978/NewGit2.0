@@ -29,4 +29,5 @@ void NotStaged();
 // Revert 
 void idNotExist() ;
 void problemInRevert();
+void idNotFound();
 #endif
