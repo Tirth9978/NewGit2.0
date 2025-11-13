@@ -85,7 +85,7 @@ bool PwdChecking(char * pwd) {
 
 }
 
-char *gettingPwd() {
+char *getting1Pwd() {
      char *cwd = getcwd(NULL, 0);  // getcwd() allocates memory when first arg = NULL
      if (cwd == NULL) {
           // Print why getcwd failed
@@ -99,7 +99,7 @@ int task() {
      if (!isUserConfig()) {
           return 1;
      } 
-     char * pwd = gettingPwd();
+     char * pwd = getting1Pwd();
 
      if (!isInit()) {
           return 2 ;
