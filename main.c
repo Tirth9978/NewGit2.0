@@ -7,7 +7,9 @@
 #include "Staging/staging.h"
 #include "Revert/revert.h"
 #include "CommitInfo/info.h"
- 
+#include "CheckingFirst/CheckingFirst.h"
+
+
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
 #define YEL "\x1B[33m"
@@ -73,16 +75,52 @@ int main(int argc , char * argv[]){
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
+               
                printf( CYN "NewGit2.0 --->" VERSION "\n" END );
                printf( YEL "Thank You for using NewGit2.0\n" END );
+               if(task()==1){
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+               }
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
                makingDotGitFolder();
           }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[1] , ".") == 0){
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
+               if (task() == 2 || task() == 3) {
+                    printf(RED "Repo is not Initialised :(\n" END);
+                    return 4;
+               }
                addingStaging();
           }
           else if (arg_count >= 1 && strcmp(child_argv[0],"commit") == 0 ){
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
+               if (task() == 2 || task() == 3) {
+                    printf(RED "Repo is not Initialised :(\n" END);
+                    return 4;
+               }
                if (strcmp(child_argv[1] , "-m")==0) {
                     if (child_argv[2] == NULL) {
                          ForGotMessage() ;
@@ -97,6 +135,17 @@ int main(int argc , char * argv[]){
                }
           }
           else if (arg_count >= 1 && strcmp(child_argv[0],"revert") == 0) {
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
+               if (task() == 2 || task() == 3) {
+                    printf(RED "Repo is not Initialised :(\n" END);
+                    return 4;
+               }
                if (child_argv[1] == NULL) {
                     idNotFound();
                }
@@ -107,6 +156,18 @@ int main(int argc , char * argv[]){
                }
           }
           else if (arg_count >= 1 && strcmp(child_argv[0],"--commitinfo") == 0) {
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
+               if (task() == 2 || task() == 3) {
+                    printf(RED "Repo is not Initialised :(\n" END);
+                    return 4;
+               }
+               printf("Info Taker");
                gettingInfo();
           }
           else {
