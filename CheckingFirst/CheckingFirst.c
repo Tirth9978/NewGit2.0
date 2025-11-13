@@ -21,7 +21,7 @@ int isUserConfig(){
      char filePath[512];
      snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
 
-     FILE *file = fopen(filePath, "a");
+     FILE *file = fopen(filePath, "r");
      if (file == NULL) {
           fileCreationConfigError();
           return;
