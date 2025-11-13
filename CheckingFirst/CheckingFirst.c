@@ -78,7 +78,7 @@ bool PwdChecking(char * pwd) {
      }
      char buffer[BUFFER_SIZE];
      while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
-          if (buffer == pwd) {
+          if (strcmp(buffer , pwd) == 0) {
                return 1;
           }
      }
