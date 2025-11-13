@@ -104,6 +104,7 @@ int main(int argc , char * argv[]){
                     return 3;
                }
                if (task() == 2 || task() == 3) {
+                    printf("%d\n" , task());
                     printf(RED "Repo is not Initialised :(\n" END);
                     return 4;
                }
