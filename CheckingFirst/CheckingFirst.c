@@ -71,19 +71,22 @@ bool PwdChecking(char * pwd) {
      char filePath[512];
      snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/InitInfo.txt", home);
 
-     FILE *file = fopen(filePath, "a");
+     FILE *file = fopen(filePath, "r");
      if (file == NULL) {
-          fileCreationConfigError();
-          return;
+     fileCreationConfigError();
+     return 0; // also fix this return
      }
+
      char buffer[BUFFER_SIZE];
      while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
-          if (strcmp(buffer , pwd) == 0) {
-               return 1;
-          }
+     buffer[strcspn(buffer, "\n")] = '\0';  // remove newline
+     if (strcmp(buffer, pwd) == 0) {
+          fclose(file);
+          return 1;
      }
+     }
+     fclose(file);
      return 0;
-
 }
 
 char *getting1Pwd() {
