@@ -3,20 +3,54 @@
 #include <pthread.h>
 #include <unistd.h>
 
+// Spinner animation
+void spinner(int sec) {
+    char spin[] = {'|', '/', '-', '\\'};
+    int i = 0;
+    int t = sec * 10; // 10 updates per second
+
+    while (t--) {
+        printf("\r   %c Processing...", spin[i]);
+        fflush(stdout);
+        i = (i + 1) % 4;
+        usleep(100000); // 0.1 sec
+    }
+    printf("\r   ✔ Done!                \n");
+}
+
+// Progress bar animation
+void progressBar(int sec) {
+    int total = 20;
+    for (int i = 0; i <= total; i++) {
+        printf("\r   [");
+        for (int j = 0; j < i; j++) printf("#");
+        for (int j = i; j < total; j++) printf("-");
+        printf("] %d%%", (i * 100) / total);
+        fflush(stdout);
+        usleep(sec * 50000);
+    }
+    printf("\n");
+}
+
+// ---------------- THREAD FUNCTIONS ----------------
+
 void *thread1_createFolder(void *arg) {
-    printf("[Thread 1] Creating NewGit2.0 setup...\n");
+    printf("\n[Thread 1] 🚀 Starting NewGit2.0 setup...\n");
+    spinner(2);
 
     system("mkdir -p ~/NewGit2.0");
-
     system("touch ~/NewGit2.0/InitInfo.txt");
     system("touch ~/NewGit2.0/configUser.txt");
 
-    printf("[Thread 1] Folder & files created.\n");
+    progressBar(2);
+
+    printf("[Thread 1] 📁 Folder & files created successfully.\n");
     return NULL;
 }
 
 void *thread2_compile(void *arg) {
-    printf("[Thread 2] Compiling newgit...\n");
+    printf("\n[Thread 2] 🔧 Compiling newgit...\n");
+    spinner(3);
 
     const char *cmd =
         "gcc -o newgit "
@@ -32,48 +66,57 @@ void *thread2_compile(void *arg) {
 
     int result = system(cmd);
 
+    progressBar(2);
+
     if (result == 0)
-        printf("[Thread 2] Compilation successful.\n");
+        printf("[Thread 2] ✅ Compilation successful.\n");
     else
-        printf("[Thread 2] Compilation failed!\n");
+        printf("[Thread 2] ❌ Compilation failed!\n");
 
     return NULL;
 }
 
 void *thread3_copyBin(void *arg) {
-    printf("[Thread 3] Copying newgit to /usr/local/bin/... (sudo required)\n");
-    printf("Please enter your password if asked.\n");
+    printf("\n[Thread 3] 📦 Installing newgit to /usr/local/bin...\n");
+    printf("🔑 Please enter your password if asked.\n");
+
+    spinner(2);
 
     system("sudo cp newgit /usr/local/bin/");
 
-    printf("[Thread 3] Installation complete.\n");
+    progressBar(2);
+
+    printf("[Thread 3] 🟢 Installation complete.\n");
     return NULL;
 }
+
+// ---------------- MAIN ----------------
 
 int main() {
     pthread_t t1, t2, t3;
 
-    printf("=== Starting NewGit Installer ===\n");
+    printf("=====================================\n");
+    printf("       🛠️  NewGit Installer 2.0       \n");
+    printf("=====================================\n");
 
-    // Thread 1: Make folder and files
     pthread_create(&t1, NULL, thread1_createFolder, NULL);
-    pthread_join(t1, NULL);      // Wait until folder created
+    pthread_join(t1, NULL);
 
-    printf("Waiting 1 second...\n");
+    printf("\n⏳ Waiting 1 second...\n");
     sleep(1);
 
-    // Thread 2: Compile program
     pthread_create(&t2, NULL, thread2_compile, NULL);
-    pthread_join(t2, NULL);      // Wait until compilation done
+    pthread_join(t2, NULL);
 
-    printf("Waiting 1 second...\n");
+    printf("\n⏳ Waiting 1 second...\n");
     sleep(1);
 
-    // Thread 3: Copy binary (sudo)
     pthread_create(&t3, NULL, thread3_copyBin, NULL);
     pthread_join(t3, NULL);
 
-    printf("=== NewGit Installation Completed ===\n");
+    printf("\n=====================================\n");
+    printf("   🎉 NewGit Installation Completed! 🎉\n");
+    printf("=====================================\n");
 
     return 0;
 }
