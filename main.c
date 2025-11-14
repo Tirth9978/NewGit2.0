@@ -156,7 +156,7 @@ int main(int argc , char * argv[]){
                     revertById(id);
                }
           }
-          else if (arg_count >= 1 && strcmp(child_argv[0],"--commitinfo") == 0) {
+          else if (arg_count >= 1 && strcmp(child_argv[0],"--info") == 0) {
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
                     printf(GRN "Just Do this : \n" END);
