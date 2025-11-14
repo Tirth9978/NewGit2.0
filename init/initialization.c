@@ -50,7 +50,7 @@ bool checkInMainFolder(char * pwd) {
 
      FILE * file = fopen(file_path , "r");
   
-     if (!file){
+     if (file==NULL){
           forkCreationProblem();
           return 0;
      }
