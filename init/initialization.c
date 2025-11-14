@@ -51,6 +51,7 @@ bool checkInMainFolder(char * pwd) {
      FILE * file = fopen(file_path , "r");
   
      if (file==NULL){
+          printf("I am Here\n");
           forkCreationProblem();
           return 0;
      }
