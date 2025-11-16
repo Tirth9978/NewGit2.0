@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "Cryptography/XOR.h"
+#include "Cryptography/xor.h"
 #include "Errors/errors.h"
 
 #define RED "\x1B[31m"

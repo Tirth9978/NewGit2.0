@@ -8,7 +8,7 @@
 #include "Revert/revert.h"
 #include "CommitInfo/info.h"
 #include "CheckingFirst/CheckingFirst.h"
-#include "Cryptography/XOR.h"
+#include "Cryptography/xor.h"
 
 
 #define RED "\x1B[31m"
