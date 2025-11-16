@@ -156,6 +156,7 @@ int main(int argc , char * argv[]){
                     revertById(id);
                }
           }
+          printf("Info Taker");
           else if (arg_count >= 1 && strcmp(child_argv[0],"--info") == 0) {
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);

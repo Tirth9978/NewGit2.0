@@ -19,7 +19,6 @@
 #define END "\033[0m"
 
 #define BUFFER_SIZE 256 // Choose an appropriate buffer size
-    
 
 void gettingInfo(){
      FILE * file = fopen(".newgit/idInfo.txt" , 'r');
