@@ -21,7 +21,7 @@
 #define BUFFER_SIZE 256 // Choose an appropriate buffer size
 
 void gettingInfo(){
-     FILE * file = fopen(".newgit/idInfo.txt" , 'r');
+     FILE * file = fopen(".newgit/idInfo.txt" , "r");
      char buffer[BUFFER_SIZE];
      if (file == NULL) {
           forkCreationProblem();
