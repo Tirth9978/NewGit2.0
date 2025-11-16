@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <unistd.h>     // for fork(), pipe()
+#include <unistd.h>     // for fork(), pipe(), sleep(), usleep()
 #include <sys/wait.h>   // for waitpid()
 #include <string.h>     // for strlen()
-#include <errno.h>    // For errno
+#include <errno.h>      // For errno
 #include <unistd.h>
-#include<stdlib.h>
+#include <stdlib.h>
 #include <stdbool.h>  
 #include <pwd.h>
 #include "initialization.h"
@@ -21,11 +21,29 @@
 
 #define VERSION "1.0.1"
 
+// Simple spinner animation
+void spinnerAnimation(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
+
 char *gettingPwd() {
      char *cwd = getcwd(NULL, 0);  // getcwd() allocates memory when first arg = NULL
      if (cwd == NULL) {
           // Print why getcwd failed
-          fprintf(stderr, "Error: getcwd failed - %s\n", strerror(errno));
+          fprintf(stderr, RED "Error: getcwd failed - %s\n" END, strerror(errno));
           return NULL;
      }
      return cwd;  // caller must free() this
@@ -50,7 +68,7 @@ bool checkInMainFolder(char * pwd) {
 
      FILE * file = fopen(file_path , "r");
   
-     if (file==NULL){
+     if (file == NULL){
           forkCreationProblem();
           return 0;
      }
@@ -59,7 +77,6 @@ bool checkInMainFolder(char * pwd) {
      bool found = false;
 
      while (fgets(line, sizeof(line), file)) {
-          printf("Tirth\n");
           // Remove newline character at the end
           size_t len = strlen(line);
           if (len > 0 && line[len - 1] == '\n') {
@@ -73,68 +90,9 @@ bool checkInMainFolder(char * pwd) {
           }
      }
 
-     fclose(file); // Closing the file is the important .... :)
+     fclose(file); // Closing the file is important :)
  
      return found;
-}
-
-void makingDotGitFolder(){
-     char *current_dir = gettingPwd();
-     printf("1\n");
-     printf("%s" , current_dir);
-     if (checkInMainFolder(current_dir)) {
-          printf(GRN "This repo already Initialized :)\n" END);
-          printf(CYN "NewGit2.0 --->"VERSION "\n" END);
-          return ;
-     }
-     sleep(3);
-     const char * folderName = ".newgit";
-     if (mkdir(folderName , 0755) == 0) {
-          sleep(3);
-          makingStagingIdInfoFile(current_dir);
-     }
-     else {
-          forkCreationProblem() ;
-     }
-     return ;
-}
-
-void makingStagingIdInfoFile(char * pwd) {
-     
-     printf("1\n");
-     if (pwd == NULL) {
-          printf("2\n");
-          ProblemInInit();
-          return ; 
-     }
-     printf("3\n");
-     const char * filePath = ".newgit/idInfo.txt";
-     FILE * file = fopen(filePath , "w");
-
-     if (file == NULL) {
-          fileCreationErrorInDotGit() ;
-          return ;
-     }
-     fclose(file);
-     
-     makingInitInfoFile(pwd);
-     makingStagingIdsFolder();
-     return ;
-}
-
-void makingStagingIdsFolder() {
-     const char * folderName = ".newgit/StagingInfo";
-
-     if (mkdir(folderName , 0755) == 0) {
-          sleep(3);
-          printf( GRN "Initialized Empty Git Repo\n" END);
-          printf( YEL "Thnak You using NewGit2.0\n" END );
-          printf(CYN "NewGit2.0 -->"VERSION "\n" END);
-     }
-     else {
-          forkCreationProblem() ;
-     }
-     return ;
 }
 
 void makingInitInfoFile(char * pwd) {
@@ -155,9 +113,89 @@ void makingInitInfoFile(char * pwd) {
           return ;
      }
 
-     fprintf(file, "%s\n" , pwd); // Add a newline after "Hello"
+     fprintf(file, "%s\n" , pwd);
 
-     // Close the file
      fclose(file);
+     return ;
+}
+
+void makingStagingIdsFolder() {
+     const char * folderName = ".newgit/StagingInfo";
+
+     spinnerAnimation(CYN "Creating staging area", 12, 100); // ~1.2 sec
+
+     if (mkdir(folderName , 0755) == 0) {
+          sleep(1);
+          printf(GRN "\nInitialized empty NewGit repo in this directory.\n" END);
+          printf(YEL "Thank you for using NewGit2.0\n" END);
+          printf(CYN "NewGit2.0 --> " VERSION "\n" END);
+     }
+     else {
+          forkCreationProblem();
+     }
+     return ;
+}
+
+void makingStagingIdInfoFile(char * pwd) {
+     
+     printf(CYN "\nSetting up internal files...\n" END);
+
+     spinnerAnimation("Creating .newgit/idInfo.txt", 10, 80);
+
+     if (pwd == NULL) {
+          ProblemInInit();
+          return ; 
+     }
+
+     const char * filePath = ".newgit/idInfo.txt";
+     FILE * file = fopen(filePath , "w");
+
+     if (file == NULL) {
+          fileCreationErrorInDotGit();
+          return ;
+     }
+     fclose(file);
+     
+     spinnerAnimation("Updating InitInfo.txt", 10, 80);
+     makingInitInfoFile(pwd);
+
+     makingStagingIdsFolder();
+     return ;
+}
+
+void makingDotGitFolder(){
+     printf(BLU "===============================\n" END);
+     printf(BLU "     NewGit2.0 Initializer     \n" END);
+     printf(BLU "===============================\n\n" END);
+
+     char *current_dir = gettingPwd();
+     if (!current_dir) {
+          return;
+     }
+
+     printf(CYN "Current Directory: " WHT "%s\n" END, current_dir);
+
+     spinnerAnimation(CYN "Checking if this repo is already initialized", 15, 70);
+
+     if (checkInMainFolder(current_dir)) {
+          printf(GRN "\nThis repo is already initialized :)\n" END);
+          printf(CYN "NewGit2.0 ---> " VERSION "\n" END);
+          free(current_dir);
+          return ;
+     }
+
+     printf(YEL "\nInitializing NewGit repository...\n" END);
+     spinnerAnimation("Creating .newgit folder", 15, 70);
+
+     const char * folderName = ".newgit";
+     if (mkdir(folderName , 0755) == 0) {
+          sleep(1);
+          makingStagingIdInfoFile(current_dir);
+     }
+     else {
+          forkCreationProblem();
+     }
+
+     free(current_dir);
      return ;
 }
