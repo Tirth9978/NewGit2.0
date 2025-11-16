@@ -62,8 +62,8 @@ void *thread2_compile(void *arg) {
         "Commit/commit.c "
         "Revert/revert.c "
         "CommitInfo/info.c "
-        "CheckingFirst/CheckingFirst.c";
-
+        "CheckingFirst/CheckingFirst.c "
+        "CommitInfo/info";
     int result = system(cmd);
 
     progressBar(2);
