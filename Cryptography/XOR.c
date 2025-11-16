@@ -58,7 +58,7 @@ char *build_output_path(const char *input_path, int mode) {
  *
  *  Return: 0 on success, -1 on error.
  */
-int newgit_encrypt_decrypt(const char *filepath) {
+int newgit_encrypt_decrypt(char *filepath) {
     FILE *in = NULL, *out = NULL;
     char *final_path = NULL;
     char *temp_path = NULL;
