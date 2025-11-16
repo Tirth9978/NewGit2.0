@@ -34,6 +34,7 @@ void gettingInfo(){
           // Process the line stored in 'buffer'
           printf("%s\n", buffer);
      }
-     
+     printf(GRN "To get the full information in txt file : \n" END );
+     printf("Type this command : open .newgit/idInfo.txt\n");
      return ;
 }
