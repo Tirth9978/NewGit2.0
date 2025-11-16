@@ -26,7 +26,7 @@ struct FileCount{
 };
 
 
-struct FileCount countFilesInPath(const char *basePath) {
+struct FileCount countFilesInPath_1(const char *basePath) {
     struct FileCount count = {0, 0};
     struct dirent *dp;
     struct stat st;
@@ -45,7 +45,7 @@ struct FileCount countFilesInPath(const char *basePath) {
         if (stat(fullPath, &st) == 0) {
             if (S_ISDIR(st.st_mode)) {
                 count.folders++;
-                struct FileCount subCount = countFilesInPath(fullPath);
+                struct FileCount subCount = countFilesInPath_1(fullPath);
                 count.files += subCount.files;
                 count.folders += subCount.folders;
             } else if (S_ISREG(st.st_mode)) {
@@ -57,10 +57,10 @@ struct FileCount countFilesInPath(const char *basePath) {
     closedir(dir);
     return count;
 }
-struct FileCount countInStagDIR(char * id ) {
+struct FileCount countInStagDIR_1(char * id ) {
      char path[256];
      snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
-     return countFilesInPath(path);
+     return countFilesInPath_1(path);
 }
 
 
@@ -86,7 +86,7 @@ void gettingInfo(){
                char *newline = strchr(id, '\n');
                if (newline) *newline = '\0';
                
-               count = countInStagDIR(id);
+               count = countInStagDIR_1(id);
           }
 
           printf("File Count   : %d\n",count.files);
@@ -95,7 +95,7 @@ void gettingInfo(){
           printf("-------------------------------------------------\n\n\n");
      }
 
-     
+
      printf(GRN "To get the full information in txt file : \n" END );
      printf("Type this command : open .newgit/idInfo.txt\n");
      return ;
