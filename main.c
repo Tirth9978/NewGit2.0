@@ -8,7 +8,6 @@
 #include "Revert/revert.h"
 #include "CommitInfo/info.h"
 #include "CheckingFirst/CheckingFirst.h"
-#include "Cryptography/xor.h"
 
 
 #define RED "\x1B[31m"
@@ -21,25 +20,6 @@
 #define END "\033[0m"
 
 #define VERSION "1.0.1"
-
-void decrypt() {
-     const char * home = getenv("HOME");
-
-     if (home == NULL) {
-          forkCreationProblem();
-          return ;
-     }
-
-     char path1[1024];
-     char path2[1024];
-     snprintf(path1 , sizeof(path1) , "%s/NewGit2.0/configUser.txt.newgit" , home);
-     snprintf(path2 , sizeof(path2) , "%s/NewGit2.0/InitInfo.txt.newgit" , home);
-
-     int ref1 = newgit_encrypt_decrypt(path1);
-     int ref2 = newgit_encrypt_decrypt(path2);
-
-     return ;
-}
 
 int main(int argc , char * argv[]){
      int fd[2];

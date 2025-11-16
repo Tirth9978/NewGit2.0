@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "Cryptography/xor.h"
 #include "Errors/errors.h"
 
 #define RED "\x1B[31m"
@@ -73,8 +72,7 @@ void *thread2_compile(void *arg) {
         "Commit/commit.c "
         "Revert/revert.c "
         "CommitInfo/info.c "
-        "CheckingFirst/CheckingFirst.c "
-        "Cryptography/XOR.c";
+        "CheckingFirst/CheckingFirst.c";
     int result = system(cmd);
 
     progressBar(2);
@@ -101,26 +99,7 @@ void *thread3_copyBin(void *arg) {
     return NULL;
 }
 
-void encrypt_decrypt() {
 
-    const char * home = getenv("HOME");
-
-    if (home == NULL) {
-        printf(RED "Complilation Problem:(\n" END);
-
-        exit(12);
-    }
-
-    char path1[1024];
-    char path2[1024];
-    snprintf(path1 , sizeof(path1) , "%s/NewGit2.0/configUser.txt" , home);
-    snprintf(path2 , sizeof(path2) , "%s/NewGit2.0/InitInfo.txt" , home);
-
-    newgit_encrypt_decrypt(path1);
-    newgit_encrypt_decrypt(path2);
-
-    return ;   
-}
 
 // ---------------- MAIN ----------------
 
@@ -146,7 +125,6 @@ int main() {
     pthread_create(&t3, NULL, thread3_copyBin, NULL);
     pthread_join(t3, NULL);
 
-    encrypt_decrypt();
 
     printf("\n=====================================\n");
     printf("   🎉 NewGit Installation Completed! 🎉\n");
