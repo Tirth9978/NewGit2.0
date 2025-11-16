@@ -5,6 +5,15 @@
 #include "Cryptography/XOR.h"
 #include "Errors/errors.h"
 
+#define RED "\x1B[31m"
+#define GRN "\x1B[32m"
+#define YEL "\x1B[33m"
+#define BLU "\x1B[34m"
+#define MAG "\x1B[35m"
+#define CYN "\x1B[36m"
+#define WHT "\x1B[37m"
+#define END "\033[0m"
+
 // Spinner animation
 void spinner(int sec) {
     char spin[] = {'|', '/', '-', '\\'};
@@ -97,8 +106,9 @@ void encrypt_decrypt() {
     const char * home = getenv("HOME");
 
     if (home == NULL) {
-        forkCreationProblem();
-        return ;
+        printf(RED "Complilation Problem:(\n" END);
+
+        exit(12);
     }
 
     char path1[1024];
@@ -106,8 +116,8 @@ void encrypt_decrypt() {
     snprintf(path1 , sizeof(path1) , "%s/NewGit2.0/configUser.txt" , home);
     snprintf(path2 , sizeof(path2) , "%s/NewGit2.0/InitInfo.txt" , home);
 
-    int ref1 = newgit_encrypt_decrypt(path1);
-    int ref2 = newgit_encrypt_decrypt(path2);
+    newgit_encrypt_decrypt(path1);
+    newgit_encrypt_decrypt(path2);
 
     return ;   
 }
