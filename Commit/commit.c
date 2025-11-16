@@ -27,6 +27,24 @@ struct FileCount{
      int folders;
 };
 
+// ===================== Spinner Animation 2 =====================
+void spinnerAnimation2(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
+
 // Only For the Counting part not for the Exporting 
 // CurrDIR 
 struct FileCount countCurrentDir() {
@@ -65,6 +83,7 @@ struct FileCount countCurrentDir() {
      closedir(dir);
      return count;
 }
+
 struct FileCount countFilesInPath(const char *basePath) {
     struct FileCount count = {0, 0};
     struct dirent *dp;
@@ -96,6 +115,7 @@ struct FileCount countFilesInPath(const char *basePath) {
     closedir(dir);
     return count;
 }
+
 struct FileCount countInStagDIR(char * id ) {
      char path[256];
      snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
@@ -142,8 +162,6 @@ char *getingId() {
 }
 
 void gettingConfigUserInfo(){
-     char * userName ;
-     char * userEmil ;
      char buff[256];
 
      const char * home = getenv("HOME");
@@ -163,16 +181,25 @@ void gettingConfigUserInfo(){
           return ;
      }
 
+     spinnerAnimation2(CYN "Loading user info from config", 12, 70);
+
      while (fgets(buff , sizeof(buff) , file) != NULL) {
           printf( YEL "%s" END , buff );
      }
+
+     fclose(file);
      return ;
 }
 
 void appendMessage(char * message) {
 
-     // Getting Id : 
+     printf(BLU "====================================\n" END);
+     printf(BLU "        NewGit2.0 Commit Tool       \n" END);
+     printf(BLU "====================================\n\n" END);
 
+     spinnerAnimation2(CYN "Preparing commit", 15, 60);
+
+     // Getting Id : 
      char * id = getingId();
      if (id == NULL){
           problemInCommit();
@@ -182,9 +209,14 @@ void appendMessage(char * message) {
           NotStaged();
           return ;
      }
+
      // Counting the Numbers-----------------------------------
-     struct FileCount currCount =countCurrentDir(); 
+     spinnerAnimation2(CYN "Counting current directory files", 15, 60);
+     struct FileCount currCount = countCurrentDir(); 
+
+     spinnerAnimation2(CYN "Counting staged snapshot files", 15, 60);
      struct FileCount stagCount = countInStagDIR(id);
+
      if (currCount.files == -1 && currCount.folders == -1) {
           problemInCommit();
           return ;
@@ -194,36 +226,39 @@ void appendMessage(char * message) {
           return ;
      }
 
-
      //---------------------------------------------------------------------------
      const char * filePath = ".newgit/idInfo.txt";
 
      FILE * file = fopen(filePath , "a");
-     printf(GRN "User information ....\n" END);
-     gettingConfigUserInfo();
      if (file == NULL) {
           problemInCommit();
           return ;
      }
 
+     printf(GRN "\nUser information ....\n" END);
+     gettingConfigUserInfo();
+
      fprintf(file ,"Commit Message : %s\n" ,message );
      fclose(file);
 
      //-----------------Normal compare ------------------------
+     printf(CYN "\nAnalyzing changes...\n" END);
+     spinnerAnimation2("Comparing current state with staged snapshot", 20, 50);
+
      int isChnaged = 0;
      if (currCount.files < stagCount.files) {
           int totalCount = stagCount.files - currCount.files;
-          printf("Files Contents : (Total count : %d)" , totalCount);
-          for (int i =0;i<totalCount;i++){
+          printf("Files Contents : (Total count : %d)", totalCount);
+          for (int i = 0; i < totalCount; i++){
                printf( RED "-" END );
           }
           printf("\n");
           isChnaged = 1;
      }
      if (currCount.folders < stagCount.folders) {
-          int totalCount = stagCount.folders - currCount.folders ; 
-          printf("Folders Contents : (Total count : %d)" , totalCount);
-          for (int i =0;i<totalCount;i++){
+          int totalCount = stagCount.folders - currCount.folders; 
+          printf("Folders Contents : (Total count : %d)", totalCount);
+          for (int i = 0; i < totalCount; i++){
                printf( RED "-" END );
           }
           printf("\n");
@@ -231,8 +266,8 @@ void appendMessage(char * message) {
      }
      if (currCount.files > stagCount.files) {
           int totalCount = -(stagCount.files - currCount.files);
-          printf("Files Contents : (Total count : %d)" , totalCount);
-          for (int i =0;i<totalCount;i++){
+          printf("Files Contents : (Total count : %d)", totalCount);
+          for (int i = 0; i < totalCount; i++){
                printf( GRN "+" END );
           }
           printf("\n");
@@ -240,17 +275,18 @@ void appendMessage(char * message) {
      }
      if (currCount.folders > stagCount.folders){
           int totalCount = -(stagCount.folders - currCount.folders);
-          printf("Folder Contents : (Total count : %d)" , totalCount);
-          for (int i =0;i<totalCount;i++){
+          printf("Folder Contents : (Total count : %d)", totalCount);
+          for (int i = 0; i < totalCount; i++){
                printf( GRN "+" END );
           }
           printf("\n");
           isChnaged = 1;
      }
      if (!isChnaged) {
-          printf("Noting Changed :) \n ");
+          printf(GRN "Nothing Changed :) \n" END);
      }
-     printf("\n\n\n");
+
+     printf("\n\n");
      printf(YEL "Thank You for using NewGit2.0\n" END);
      printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      return ;
