@@ -70,11 +70,10 @@ int main(int argc , char * argv[]){
           char * arg3 = argv[3];
           char * arg4 = argv[4];
      
-          printf("1\n");
+     
           if (arg_count >= 1 && strcmp(child_argv[0], "config") == 0) {
                SecondAgrumentChecking(arg1 , arg2 , arg3 , arg4);
           }
-          printf("2\n");
           else if (arg_count >= 1 && strcmp(child_argv[0] , "--version") == 0) {
                
                printf( CYN "NewGit2.0 --->" VERSION "\n" END );
@@ -86,7 +85,6 @@ int main(int argc , char * argv[]){
                     printf(YEL "newgit config --global user.email <Email ID>\n" END);
                }
           }
-          printf("3\n");
           else if (arg_count >= 1 && strcmp(child_argv[0] , "init") == 0) {
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
@@ -97,7 +95,6 @@ int main(int argc , char * argv[]){
                }
                makingDotGitFolder();
           }
-          printf("4\n");
           else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[1] , ".") == 0){
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
@@ -113,7 +110,6 @@ int main(int argc , char * argv[]){
                }
                addingStaging();
           }
-          printf("5\n");
           else if (arg_count >= 1 && strcmp(child_argv[0],"commit") == 0 ){
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
@@ -139,7 +135,6 @@ int main(int argc , char * argv[]){
                     Forgot_M();
                }
           }
-          printf("6\n");
           else if (arg_count >= 1 && strcmp(child_argv[0],"revert") == 0) {
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
@@ -161,7 +156,6 @@ int main(int argc , char * argv[]){
                     revertById(id);
                }
           }
-          printf("6\n");
           else if (arg_count >= 1 && strcmp(child_argv[0],"--info") == 0) {
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
