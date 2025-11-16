@@ -27,7 +27,7 @@ struct FileCount{
 };
 
 // Spinner animation (same style as previous code)
-void spinnerAnimation(const char *message, int cycles, int delayMs) {
+void spinnerAnimation1(const char *message, int cycles, int delayMs) {
      const char spinnerChars[] = "|/-\\";
      int spinnerLen = 4;
 
@@ -94,7 +94,7 @@ void gettingInfo(){
      printf(BLU "        NewGit2.0 Commit History      \n" END);
      printf(BLU "======================================\n\n" END);
 
-     spinnerAnimation(CYN "Loading history", 15, 60);
+     spinnerAnimation1(CYN "Loading history", 15, 60);
 
      printf(GRN "\nHistory : \n\n" END );
 
@@ -114,7 +114,7 @@ void gettingInfo(){
                if (newline) *newline = '\0';
 
                // Cool animation while counting files/folders for this ID
-               spinnerAnimation(CYN "Scanning snapshot files", 12, 70);
+               spinnerAnimation1(CYN "Scanning snapshot files", 12, 70);
 
                count = countInStagDIR_1(id);
           }
