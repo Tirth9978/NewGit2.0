@@ -95,6 +95,21 @@ int main(int argc , char * argv[]){
                }
                makingDotGitFolder();
           }
+          else if (arg_count >= 1 && strcmp(child_argv[0],"--info") == 0) {
+               if (task()==1) {
+                    printf(RED "User Not config :(\n" END);
+                    printf(GRN "Just Do this : \n" END);
+                    printf(YEL "newgit config --global user.name <User Name>\n" END);
+                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
+                    return 3;
+               }
+               if (task() == 2 || task() == 3) {
+                    printf(RED "Repo is not Initialised :(\n" END);
+                    return 4;
+               }
+               printf("Info Taker");
+               gettingInfo();
+          }
           else if (arg_count >= 1 && strcmp(child_argv[0] , "add") == 0 && strcmp(child_argv[1] , ".") == 0){
                if (task()==1) {
                     printf(RED "User Not config :(\n" END);
@@ -156,24 +171,11 @@ int main(int argc , char * argv[]){
                     revertById(id);
                }
           }
-          else if (arg_count >= 1 && strcmp(child_argv[0],"--info") == 0) {
-               if (task()==1) {
-                    printf(RED "User Not config :(\n" END);
-                    printf(GRN "Just Do this : \n" END);
-                    printf(YEL "newgit config --global user.name <User Name>\n" END);
-                    printf(YEL "newgit config --global user.email <Email ID>\n" END);
-                    return 3;
-               }
-               if (task() == 2 || task() == 3) {
-                    printf(RED "Repo is not Initialised :(\n" END);
-                    return 4;
-               }
-               printf("Info Taker");
-               gettingInfo();
-          }
+          
           else {
                invalidCommand();
           }
+          exit(1);
      }
      else {
           close(fd[0]); // Close read end
