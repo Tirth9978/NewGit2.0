@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "Cryptography/XOR.h"
+#include "Errors/errors.h"
 
 // Spinner animation
 void spinner(int sec) {
@@ -63,7 +64,8 @@ void *thread2_compile(void *arg) {
         "Commit/commit.c "
         "Revert/revert.c "
         "CommitInfo/info.c "
-        "CheckingFirst/CheckingFirst.c";
+        "CheckingFirst/CheckingFirst.c"
+        "Cryptography/XOR.c";
     int result = system(cmd);
 
     progressBar(2);
