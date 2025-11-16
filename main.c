@@ -32,8 +32,8 @@ void decrypt() {
 
      char path1[1024];
      char path2[1024];
-     snprintf(path1 , sizeof(path) , "%s/NewGit2.0/configUser.txt.newgit" , home);
-     snprintf(path2 , sizeof(path) , "%s/NewGit2.0/InitInfo.txt.newgit" , home);
+     snprintf(path1 , sizeof(path1) , "%s/NewGit2.0/configUser.txt.newgit" , home);
+     snprintf(path2 , sizeof(path2) , "%s/NewGit2.0/InitInfo.txt.newgit" , home);
 
      int ref1 = newgit_encrypt_decrypt(path1);
      int ref2 = newgit_encrypt_decrypt(path2);

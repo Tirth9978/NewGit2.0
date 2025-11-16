@@ -101,12 +101,12 @@ void encrypt_decrypt() {
 
     char path1[1024];
     char path2[1024];
-    snprintf(path1 , sizeof(path) , "%s/NewGit2.0/configUser.txt" , home);
-    snprintf(path2 , sizeof(path) , "%s/NewGit2.0/InitInfo.txt" , home);
+    snprintf(path1 , sizeof(path1) , "%s/NewGit2.0/configUser.txt" , home);
+    snprintf(path2 , sizeof(path2) , "%s/NewGit2.0/InitInfo.txt" , home);
 
     int ref1 = newgit_encrypt_decrypt(path1);
     int ref2 = newgit_encrypt_decrypt(path2);
-    
+
     return ;   
 }
 
