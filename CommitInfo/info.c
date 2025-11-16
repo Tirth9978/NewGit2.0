@@ -9,7 +9,6 @@
 #include "info.h"
 #include "../Errors/errors.h"
 
-
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
 #define YEL "\x1B[33m"
@@ -27,6 +26,23 @@ struct FileCount{
      int folders;
 };
 
+// Spinner animation (same style as previous code)
+void spinnerAnimation(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
 
 struct FileCount countFilesInPath_1(const char *basePath) {
     struct FileCount count = {0, 0};
@@ -59,12 +75,12 @@ struct FileCount countFilesInPath_1(const char *basePath) {
     closedir(dir);
     return count;
 }
+
 struct FileCount countInStagDIR_1(char * id ) {
      char path[256];
      snprintf(path, sizeof(path), ".newgit/StagingInfo/%s", id);
      return countFilesInPath_1(path);
 }
-
 
 void gettingInfo(){
      FILE * file = fopen(".newgit/idInfo.txt" , "r");
@@ -74,32 +90,45 @@ void gettingInfo(){
           return ;
      }
 
-     printf( GRN "History : \n" END );
+     printf(BLU "======================================\n" END);
+     printf(BLU "        NewGit2.0 Commit History      \n" END);
+     printf(BLU "======================================\n\n" END);
+
+     spinnerAnimation(CYN "Loading history", 15, 60);
+
+     printf(GRN "\nHistory : \n\n" END );
 
      while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
-          printf("%s", buffer);  
+          // Print original line (ID, message, etc.)
+          printf(WHT "%s" END, buffer);  
 
           char *prefix = "Id:";
           char *pos = strstr(buffer, prefix);
           struct FileCount count = {-1,-1};
+
           if (pos != NULL) {
                char *id = pos + strlen(prefix);
 
+               // Trim newline at end
                char *newline = strchr(id, '\n');
                if (newline) *newline = '\0';
-               
+
+               // Cool animation while counting files/folders for this ID
+               spinnerAnimation(CYN "Scanning snapshot files", 12, 70);
+
                count = countInStagDIR_1(id);
           }
 
-          printf("File Count   : %d\n",count.files);
-          printf("Folder Count : %d\n",count.folders);
+          printf(GRN "File Count   : %d\n" END, count.files);
+          printf(GRN "Folder Count : %d\n" END, count.folders);
 
-          printf("-------------------------------------------------\n\n\n");
+          printf(YEL "-------------------------------------------------\n\n" END);
      }
 
+     fclose(file);
 
      printf(GRN "To get the full information in txt file : \n" END );
-     printf("Type this command : open .newgit/idInfo.txt\n\n\n");
+     printf(WHT "Type this command : open .newgit/idInfo.txt\n\n\n" END);
 
      printf(YEL "Thank You for using NewGit2.0\n" END);
      printf(CYN "NewGit2.0 ---" VERSION "\n" END);
