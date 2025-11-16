@@ -20,6 +20,7 @@
 #define END "\033[0m"
 
 #define BUFFER_SIZE 256 // Choose an appropriate buffer size
+#define VERSION "1.0.1"
 
 struct FileCount{
      int files ; 
@@ -98,6 +99,9 @@ void gettingInfo(){
 
 
      printf(GRN "To get the full information in txt file : \n" END );
-     printf("Type this command : open .newgit/idInfo.txt\n");
+     printf("Type this command : open .newgit/idInfo.txt\n\n\n");
+
+     printf(YEL "Thank You for using NewGit2.0\n" END);
+     printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      return ;
 }

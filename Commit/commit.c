@@ -19,6 +19,7 @@
 #define WHT "\x1B[37m"
 #define END "\033[0m"
 
+#define VERSION "1.0.1"
 
 //Structures
 struct FileCount{
@@ -249,6 +250,8 @@ void appendMessage(char * message) {
      if (!isChnaged) {
           printf("Noting Changed :) \n ");
      }
-     
+     printf("\n\n\n");
+     printf(YEL "Thank You for using NewGit2.0\n" END);
+     printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      return ;
 }

@@ -19,7 +19,7 @@
 #define END "\033[0m"
 
 #define BUFFER_SIZE 8192  // 8KB buffer
-
+#define VERSION "1.0.1"
 
 // Function declarations
 void copyDirectory(const char *srcDir, const char *destDir);
@@ -133,4 +133,7 @@ void revertById(char * id) {
      }
      printf("In revert : %s\n",id);
      newgit_revert(id);
+    printf("\n\n\n");
+     printf(YEL "Thank You for using NewGit2.0\n" END);
+     printf(CYN "NewGit2.0 ---" VERSION "\n" END);
 }
