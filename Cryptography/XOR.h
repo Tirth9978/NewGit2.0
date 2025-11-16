@@ -1,0 +1,6 @@
+#ifndef XOR_H
+#define XOR_H
+
+int newgit_encrypt_decrypt(const char *filepath);
+
+#endif

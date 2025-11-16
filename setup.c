@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
+#include "Cryptography/XOR.h"
 
 // Spinner animation
 void spinner(int sec) {
@@ -89,6 +90,26 @@ void *thread3_copyBin(void *arg) {
     return NULL;
 }
 
+void encrypt_decrypt() {
+
+    const char * home = getenv("HOME");
+
+    if (home == NULL) {
+        forkCreationProblem();
+        return ;
+    }
+
+    char path1[1024];
+    char path2[1024];
+    snprintf(path1 , sizeof(path) , "%s/NewGit2.0/configUser.txt" , home);
+    snprintf(path2 , sizeof(path) , "%s/NewGit2.0/InitInfo.txt" , home);
+
+    int ref1 = newgit_encrypt_decrypt(path1);
+    int ref2 = newgit_encrypt_decrypt(path2);
+    
+    return ;   
+}
+
 // ---------------- MAIN ----------------
 
 int main() {
@@ -112,6 +133,8 @@ int main() {
 
     pthread_create(&t3, NULL, thread3_copyBin, NULL);
     pthread_join(t3, NULL);
+
+    encrypt_decrypt();
 
     printf("\n=====================================\n");
     printf("   🎉 NewGit Installation Completed! 🎉\n");
