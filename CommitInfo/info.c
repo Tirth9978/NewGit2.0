@@ -106,7 +106,7 @@ void gettingInfo(){
           char *pos = strstr(buffer, prefix);
           struct FileCount count = {-1,-1};
 
-          if (pos != NULL) {
+          if (pos != NULL  && (buffer[0]=='I' && buffer[1] =='d')) {
                char *id = pos + strlen(prefix);
 
                // Trim newline at end
