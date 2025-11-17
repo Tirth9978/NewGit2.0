@@ -135,6 +135,56 @@ void gettingInfo(){
      return ;
 }
 
+int empty_directory(char *path) {
+    DIR *dir;
+    struct dirent *entry;
+    char full_path[1024]; // Buffer for full path
+
+    if (!(dir = opendir(path))) {
+        perror("opendir");
+        return -1;
+    }
+
+    while ((entry = readdir(dir)) != NULL) {
+        // Skip . and ..
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
+
+        struct stat st;
+        if (lstat(full_path, &st) == -1) {
+            perror("lstat");
+            closedir(dir);
+            return -1;
+        }
+
+        if (S_ISDIR(st.st_mode)) {
+            // Recursively empty subdirectory
+            if (empty_directory(full_path) == -1) {
+                closedir(dir);
+                return -1;
+            }
+            // Remove empty subdirectory
+            if (rmdir(full_path) == -1) {
+                perror("rmdir");
+                closedir(dir);
+                return -1;
+            }
+        } else {
+            // Delete file
+            if (unlink(full_path) == -1) {
+                perror("unlink");
+                closedir(dir);
+                return -1;
+            }
+        }
+    }
+
+    closedir(dir);
+    return 0;
+}
 
 void removeHistory(){
 
@@ -153,7 +203,7 @@ void removeHistory(){
           }
 
           fclose(file);
-
+          int ref= empty_directory(".newgit/StagingInfo/");
           printf(GRN "Your History successfully removed ...\n" END);
      }
      else {
