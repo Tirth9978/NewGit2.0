@@ -22,6 +22,24 @@
 
 #define VERSION "1.0.1"
 
+// ===================== Spinner Animation 5 =====================
+void spinnerAnimation5(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
+
 const char * generateId() {
     const char * data1 = "ASDFGHJKLZXCVBNMPOIUYTREWQ";
     const char * data2 = "1234567890";
@@ -123,9 +141,13 @@ void copy_recursive(const char *src_dir, const char *dest_dir) {
           stat(src_path, &st);
 
           if (S_ISDIR(st.st_mode)) {
+               printf(CYN "Adding folder to staging : " WHT "%s\n" END, dest_path);
+               spinnerAnimation5("   Copying folder", 8, 40);
                // If directory → recurse
                copy_recursive(src_path, dest_path);
           } else {
+               printf(CYN "Adding file to staging   : " WHT "%s\n" END, dest_path);
+               spinnerAnimation5("   Copying file", 8, 40);
                // If file → copy
                copy_file(src_path, dest_path);
           }
@@ -139,30 +161,52 @@ void movingFilesToStaheFolder(char *basePath, char *id) {
      char final_path[512];
      snprintf(final_path, sizeof(final_path), "%s%s", basePath, id);
 
+     printf(BLU "====================================\n" END);
+     printf(BLU "        NewGit2.0 Staging Tool      \n" END);
+     printf(BLU "====================================\n\n" END);
+
+     printf(CYN "Staging ID         : " WHT "%s\n" END, id);
+     printf(CYN "Staging location   : " WHT "%s\n\n" END, final_path);
+
+     spinnerAnimation5(CYN "Preparing staging directory", 15, 60);
+
      mkdir(final_path, 0777);
+
+     printf(YEL "Copying current project into staging...\n\n" END);
+     spinnerAnimation5(CYN "Copying project files", 20, 50);
 
      // Copy everything recursively from current folder
      copy_recursive(".", final_path);
 
+     printf("\n");
      printf(GRN "✅ Repo successfully added to Staging Environment!\n" END);
      printf(CYN "NewGit2.0 --->" VERSION "\n" END);
 }
 
 // ✅ Add staging info and perform copy
 void addingStaging() {
+     printf(BLU "====================================\n" END);
+     printf(BLU "        NewGit2.0 Staging Tool      \n" END);
+     printf(BLU "====================================\n\n" END);
+
+     spinnerAnimation5(CYN "Generating staging ID", 12, 70);
      const char *id = generateId();
+
      const char *filePath = ".newgit/idInfo.txt";
 
-
      FILE *file = fopen(filePath, "a");
-    if (file == NULL) {
-        faultStaging();
-        return;
-    }
+     if (file == NULL) {
+          faultStaging();
+          return;
+     }
 
-    fprintf(file, "Id:%s\n", id);
-    fprintf(file, "Day/Time: %s\n", getDateTime());
-    fclose(file);
+     char *dateTime = getDateTime();
+
+     spinnerAnimation5(CYN "Writing staging metadata", 12, 70);
+
+     fprintf(file, "Id:%s\n", id);
+     fprintf(file, "Day/Time: %s\n", dateTime);
+     fclose(file);
     
-    movingFilesToStaheFolder(".newgit/StagingInfo/", id);
+     movingFilesToStaheFolder(".newgit/StagingInfo/", (char *)id);
 }
