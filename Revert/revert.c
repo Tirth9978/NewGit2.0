@@ -21,6 +21,24 @@
 #define BUFFER_SIZE 8192  // 8KB buffer
 #define VERSION "1.0.1"
 
+// =============== Spinner Animation 4 ===============
+void spinnerAnimation4(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
+
 // Function declarations
 void copyDirectory(const char *srcDir, const char *destDir);
 void copyFile(const char *srcFile, const char *destFile);
@@ -58,19 +76,37 @@ void newgit_revert(const char *id) {
 
      struct stat st;
      if (stat(srcPath, &st) != 0 || !S_ISDIR(st.st_mode)) {
-          fprintf(stderr, "Error: Invalid ID or directory not found at %s\n", srcPath);
+          fprintf(stderr, RED "Error: Invalid ID or directory not found at %s\n" END, srcPath);
           return;
      }
 
-     printf("Reverting from %s → current directory...\n", srcPath);
+     printf(BLU "====================================\n" END);
+     printf(BLU "        NewGit2.0 Revert Tool       \n" END);
+     printf(BLU "====================================\n\n" END);
+
+     printf(CYN "Target snapshot ID : " WHT "%s\n" END, id);
+     printf(CYN "Snapshot location  : " WHT "%s\n\n" END, srcPath);
+
+     spinnerAnimation4(CYN "Preparing to restore files", 18, 60);
+
+     printf(YEL "Reverting from snapshot → current directory...\n" END);
+     printf(WHT "(Existing files with same names will be overwritten)\n\n" END);
+
+     spinnerAnimation4(CYN "Copying snapshot contents", 20, 50);
+
      copyDirectory(srcPath, ".");
-     printf("Revert completed successfully.\n");
+
+     printf("\n");
+     printf(GRN "Revert completed successfully.\n" END);
 }
 
 // Recursive directory copy (skipping .newgit)
 void copyDirectory(const char *srcDir, const char *destDir) {
     DIR *dir = opendir(srcDir);
-    if (!dir) return;
+    if (!dir) {
+        fprintf(stderr, RED "Error: Could not open directory %s\n" END, srcDir);
+        return;
+    }
 
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
@@ -90,10 +126,12 @@ void copyDirectory(const char *srcDir, const char *destDir) {
             if (S_ISDIR(st.st_mode)) {
                 // Create directory if not exists
                 mkdir(destPath, 0755);
+                printf(CYN "Created directory: " WHT "%s\n" END, destPath);
                 // Recursively copy
                 copyDirectory(srcPath, destPath);
             } else if (S_ISREG(st.st_mode)) {
-                // Copy regular file
+                printf(CYN "Restoring file   : " WHT "%s\n" END, destPath);
+                spinnerAnimation4("   Writing data", 8, 40);
                 copyFile(srcPath, destPath);
             }
         }
@@ -105,13 +143,13 @@ void copyDirectory(const char *srcDir, const char *destDir) {
 void copyFile(const char *srcFile, const char *destFile) {
     FILE *src = fopen(srcFile, "rb");
     if (!src) {
-        fprintf(stderr, "Error opening source file: %s\n", srcFile);
+        fprintf(stderr, RED "Error opening source file: %s\n" END, srcFile);
         return;
     }
 
     FILE *dest = fopen(destFile, "wb");
     if (!dest) {
-        fprintf(stderr, "Error creating destination file: %s\n", destFile);
+        fprintf(stderr, RED "Error creating destination file: %s\n" END, destFile);
         fclose(src);
         return;
     }
@@ -127,13 +165,22 @@ void copyFile(const char *srcFile, const char *destFile) {
 }
 
 void revertById(char * id) {
+     printf(BLU "====================================\n" END);
+     printf(BLU "        NewGit2.0 Revert Tool       \n" END);
+     printf(BLU "====================================\n\n" END);
+
+     spinnerAnimation4(CYN "Validating snapshot ID", 15, 60);
+
      if (!exist(id)) {
           idNotExist();
           return ;
      }
-     printf("In revert : %s\n",id);
+
+     printf(GRN "Snapshot ID %s is valid.\n\n" END, id);
+
      newgit_revert(id);
-    printf("\n\n\n");
+
+     printf("\n\n");
      printf(YEL "Thank You for using NewGit2.0\n" END);
      printf(CYN "NewGit2.0 ---" VERSION "\n" END);
 }
