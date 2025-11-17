@@ -124,7 +124,7 @@ void gettingInfo(){
           }
           
 
-          printf(YEL "-------------------------------------------------\n\n" END);
+          
      }
 
      fclose(file);
