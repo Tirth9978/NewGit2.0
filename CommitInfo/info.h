@@ -2,5 +2,6 @@
 #define INFO_H
 
 void gettingInfo();
+void removeHistory();
 
 #endif

@@ -134,3 +134,31 @@ void gettingInfo(){
      printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      return ;
 }
+
+
+void removeHistory(){
+
+     char ch ;
+     printf("Are you sure you want to remove the History (y or n): ");
+     scanf("%c" , &ch);
+     if (ch == 'n') {
+          return ;
+     }
+     else if (ch == 'y') {
+          FILE * file = fopen(".newgit/idInfo.txt" , "w");
+          char buffer[BUFFER_SIZE];
+          if (file == NULL) {
+               forkCreationProblem();
+               return ;
+          }
+
+          fclose(file);
+
+          printf(GRN "Your History successfully removed ...\n" END);
+     }
+     else {
+          printf(END "Please enter the Valid things :(\n" END);
+     }
+     
+     return ;
+}
