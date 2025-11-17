@@ -26,12 +26,10 @@ int isUserConfig(){
           fileCreationConfigError();
           return;
      }
-     printf("Tirth\n");
      int count = 0;
      char buffer[BUFFER_SIZE];
      while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
           count ++ ;
-          printf("Tirth\n");
      }
 
      if (count < 2) {
