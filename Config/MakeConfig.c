@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>     // for fork()
+#include <unistd.h>     // for fork(), usleep()
 #include <sys/wait.h>   // for wait()
 #include "MakeConfig.h"
 #include "../Errors/errors.h"
@@ -19,6 +19,24 @@
 
 #define VERSION "1.0.1"
 
+
+// ===================== Spinner Animation 3 =====================
+void spinnerAnimation3(const char *message, int cycles, int delayMs) {
+     const char spinnerChars[] = "|/-\\";
+     int spinnerLen = 4;
+
+     printf("%s ", message);
+     fflush(stdout);
+
+     for (int i = 0; i < cycles; i++) {
+          char c = spinnerChars[i % spinnerLen];
+          printf("%c", c);
+          fflush(stdout);
+          usleep(delayMs * 1000); // delayMs milliseconds
+          printf("\b"); // move cursor back
+     }
+     printf(" \n"); // clear char & go next line
+}
 
 int findMainConfigFile (){
      const char *homeDir = getenv("HOME");
@@ -54,6 +72,12 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
      pid_t pid ;
      
      if (strcmp(arg2 , "--global") == 0){
+          printf(BLU "====================================\n" END);
+          printf(BLU "        NewGit2.0 Config Tool       \n" END);
+          printf(BLU "====================================\n\n" END);
+
+          spinnerAnimation3(CYN "Processing global configuration", 15, 60);
+
           pid = fork();
           if (pid < 0){
                forkCreationProblem();
@@ -65,6 +89,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                          NotFoundUserName();
                     }
                     else {
+                         spinnerAnimation3(CYN "Saving user.name", 12, 70);
                          addConfigUser(arg4 , "Username") ;
                     }
                }
@@ -74,6 +99,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                     }
                     else {
                          if (strstr(arg4 , "@") != NULL && (strstr(arg4 , ".com") != NULL || strstr(arg4 , ".in") != NULL)){
+                              spinnerAnimation3(CYN "Saving user.email", 12, 70);
                               addConfigUser(arg4 , "Email") ;
                          }
                          else {
@@ -82,6 +108,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
                     }
                }
                else {
+                    spinnerAnimation3(CYN "Updating custom config key", 12, 70);
                     userConfig(arg3);
                }
           }
@@ -91,13 +118,18 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
           }
      }
      else if (strcmp(arg2 , "--info") == 0) {
+          printf(BLU "====================================\n" END);
+          printf(BLU "        NewGit2.0 Config Info       \n" END);
+          printf(BLU "====================================\n\n" END);
+
+          spinnerAnimation3(CYN "Fetching configuration info", 15, 60);
+
           pid = fork() ;
           if (pid < 0){
                forkCreationProblem();
                exit(1);
           }
           if (pid == 0){
-               printf("I am in the --info\n");
                ReadingConfigData();
           }
           else {
@@ -106,7 +138,7 @@ void SecondAgrumentChecking(char * arg1 , char * arg2 , char * arg3 , char * arg
           }
      }
      else {
-          printf("Sorry :(");
+          printf(RED "Sorry :( Unknown config option.\n" END);
      }
 }
 
@@ -134,32 +166,37 @@ void addConfigUser(char *str, char *type) {
     }
     
     char filePath[512];
-    // FIX 1: Use snprintf instead of vsnprintf
     snprintf(filePath, sizeof(filePath), "%s/NewGit2.0/configUser.txt", home);
 
-    // FIX 2: Use double quotes for mode string, not single quotes
     FILE *file = fopen(filePath, "a");
     if (file == NULL) {
         fileCreationConfigError();
         return;
     }
 
-    // FIX 3: Don't modify string literals - use a buffer instead
     char message[256];
-    snprintf(message, sizeof(message), "Username :%s\n", str);
+
+    if (strcmp(type, "Username") == 0) {
+         snprintf(message, sizeof(message), "Username :%s\n", str);
+    } else if (strcmp(type, "Email") == 0) {
+         snprintf(message, sizeof(message), "Email    :%s\n", str);
+    } else {
+         snprintf(message, sizeof(message), "%s :%s\n", type, str);
+    }
 
     size_t bytes_written = fwrite(message, sizeof(char), strlen(message), file);
 
     if (bytes_written != strlen(message)) {
         fileCreationConfigError();
-        fclose(file); // Don't forget to close before returning
+        fclose(file);
         return;
     }
 
     fclose(file);
 
-    // FIX 4: Correct the printf format string and syntax
-    printf(GRN "%s Successfully config as %s\n" END, type, str);
+    spinnerAnimation3(GRN "Finalizing configuration", 10, 70);
+
+    printf(GRN "%s successfully configured as %s\n" END, type, str);
     printf(YEL "Thank You for using NewGit2.0\n" END);
     printf(CYN "NewGit2.0 ---" VERSION END "\n");
     return;
@@ -179,16 +216,19 @@ void ReadingConfigData() {
      FILE * file = fopen(filePath, "r");
 
      if (file == NULL) {
-          printf("Error: Could not open configuration file at %s\n", filePath);
+          printf(RED "Error: Could not open configuration file at %s\n" END, filePath);
           return;
      }
+
+     printf(GRN "Current NewGit2.0 global configuration:\n\n" END);
 
      char line[256];
      while (fgets(line, sizeof(line), file) != NULL) {
           // Remove trailing newline character if present
           line[strcspn(line, "\n")] = '\0';
-          printf("%s\n", line);
+          printf(WHT "%s\n" END, line);
      }
+     printf("\n");
      printf(YEL "Thank You for using NewGit2.0\n" END);
      printf(CYN "NewGit2.0 ---" VERSION "\n" END);
      fclose(file);
