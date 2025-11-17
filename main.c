@@ -173,6 +173,9 @@ int main(int argc , char * argv[]){
                     revertById(id);
                }
           }
+          else if (arg_count >= 1 && strcmp(child_argv[0],"rm") == 0 && strcmp(child_argv[1],"--info") == 0) {
+               removeHistory();
+          }
           
           else {
                invalidCommand();
