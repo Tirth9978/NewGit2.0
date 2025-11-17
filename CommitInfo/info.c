@@ -106,7 +106,7 @@ void gettingInfo(){
           char *pos = strstr(buffer, prefix);
           struct FileCount count = {-1,-1};
 
-          if (pos != NULL  && (buffer[0]=='I' && buffer[1] =='d')) {
+          if (pos != NULL ) {
                char *id = pos + strlen(prefix);
 
                // Trim newline at end
@@ -117,10 +117,12 @@ void gettingInfo(){
                spinnerAnimation1(CYN "Scanning snapshot files", 12, 70);
 
                count = countInStagDIR_1(id);
+          }    
+          if (count.files != -1 && count.folders != -1) {
+               printf(GRN "File Count   : %d\n" END, count.files);
+               printf(GRN "Folder Count : %d\n" END, count.folders);
           }
-
-          printf(GRN "File Count   : %d\n" END, count.files);
-          printf(GRN "Folder Count : %d\n" END, count.folders);
+          
 
           printf(YEL "-------------------------------------------------\n\n" END);
      }
